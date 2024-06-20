@@ -1,0 +1,59 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+form {
+  max-width: 400px;
+  margin: auto;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+}
+
+#resultado {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.calculo {
+  margin-top: 10px;
+}
+
+.btn-check:checked+.btn-bb {
+  background-color: #FCFA64 !important;
+  border-color: #FCFA64 !important;
+}
+
+.btn-check:checked+.btn-itau {
+  background-color: #FF6200 !important;
+  border-color: #FF6200 !important;
+}
+
+.btn-check:checked+.btn-caixa {
+  background-color: #0070AF !important;
+  border-color: #0070AF !important;
+}
+
+.banco-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
+  margin: 10px;
+}
