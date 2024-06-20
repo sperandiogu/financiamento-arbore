@@ -51,6 +51,16 @@ button {
   transition: 0.5s;
 }
 
+.btn-check:checked+.btn-santander {
+  background-color: #EA1D25 !important;
+  transition: 0.5s;
+}
+
+.btn-check:checked+.btn-nubank {
+  background-color: #820AD1 !important;
+  transition: 0.5s;
+}
+
 .banco-logo {
   width: 90px;
   height: auto;
