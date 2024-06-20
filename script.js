@@ -17,7 +17,7 @@ function atualizarEntrada() {
   const campoValorImovel = document.getElementById('valor-imovel');
   let valorImovel = parseFloat(campoValorImovel.value.replace(/\./g, '').replace(',', '.'));
   if (!isNaN(valorImovel)) {
-    const entradaMinima = valorImovel * 0.1;
+    const entradaMinima = valorImovel * 0.3;
     const entradaCampo = document.getElementById('entrada');
     entradaCampo.value = entradaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
@@ -32,20 +32,27 @@ function selecionarBanco(banco) {
   }
 }
 
-function calcular() {
+function calcular(event) {
+  event.preventDefault();
+
+  const form = document.querySelector('.needs-validation');
+  if (!form.checkValidity()) {
+    event.stopPropagation();
+    form.classList.add('was-validated');
+    return;
+  }
+
   const valorImovel = parseFloat(document.getElementById('valor-imovel').value.replace(/\./g, '').replace(',', '.'));
   const entrada = parseFloat(document.getElementById('entrada').value.replace(/\./g, '').replace(',', '.'));
   const taxaJurosAnual = parseFloat(document.getElementById('taxa-juros').value) / 100;
   const prazo = parseInt(document.getElementById('prazo').value);
 
-  if (isNaN(valorImovel) || isNaN(entrada) || isNaN(taxaJurosAnual) || isNaN(prazo)) {
-    alert("Por favor, preencha todos os campos corretamente.");
+  if (entrada < valorImovel * 0.3) {
+    document.getElementById('entrada').setCustomValidity('A entrada não pode ser menor do que 30% do valor do imóvel.');
+    document.getElementById('entrada').reportValidity();
     return;
-  }
-
-  if (entrada < valorImovel * 0.1) {
-    alert("A entrada não pode ser menor do que 30% do valor do imóvel.");
-    return;
+  } else {
+    document.getElementById('entrada').setCustomValidity('');
   }
 
   // Converter taxa de juros anual para mensal
@@ -75,3 +82,5 @@ document.querySelectorAll('input[type="text"], input[type="number"]').forEach((i
     event.target.value = event.target.value.replace(/[^\d.,]/g, '');
   });
 });
+
+document.querySelector('.needs-validation').addEventListener('submit', calcular);
