@@ -21,11 +21,11 @@
     <div class="row justify-content-md-center">
       <div class="col mb-3">
         <label class="form-label" for="valor-imovel">Valor do Imóvel (R$):</label>
-        <input class="form-control" type="text" id="valor-imovel" required onblur="atualizarEntrada()">
+        <input class="form-control" type="number" id="valor-imovel" required onblur="atualizarEntrada()">
       </div>
       <div class="col">
         <label class="form-label" for="entrada">Entrada (R$):</label>
-        <input class="form-control" type="text" id="entrada" required onblur="formatarNumero(this)" disabled>
+        <input class="form-control" type="number" id="entrada" required onblur="formatarNumero(this)" disabled>
       </div>
     </div>
     <div class="row justify-content-md-center">
@@ -35,19 +35,19 @@
           <input type="radio" class="btn-check" name="banco" id="banco-do-brasil" autocomplete="off"
             onclick="selecionarBanco('Banco do Brasil')">
           <label class="btn btn-outline-primary btn-bb" for="banco-do-brasil">
-            <img src="img/bb.png" alt="Banco do Brasil" class="img-fluid">
+            <img src="img/bb.png" alt="Banco do Brasil" class="img-fluid img-thumbnail">
           </label>
 
           <input type="radio" class="btn-check btn-itau" name="banco" id="itau" autocomplete="off"
             onclick="selecionarBanco('Itau')">
           <label class="btn btn-outline-primary btn-itau" for="itau">
-            <img src="img/itau.png" alt="Itau" class="img-fluid">
+            <img src="img/itau.png" alt="Itau" class="img-fluid img-thumbnail">
           </label>
 
           <input type="radio" class="btn-check" name="banco" id="caixa" autocomplete="off"
             onclick="selecionarBanco('Caixa')">
           <label class="btn btn-outline-primary btn-caixa" for="caixa">
-            <img src="img/caixa.png" alt="Caixa" class="img-fluid">
+            <img src="img/caixa.png" alt="Caixa" class="img-fluid img-thumbnail">
           </label>
         </div>
       </div>
