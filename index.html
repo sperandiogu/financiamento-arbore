@@ -15,7 +15,7 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
   <div class="container mt-5">
-    <h1 class="text-center">Cadastro</h1>
+    <h1 class="text-center mb-4">Cadastro</h1>
     <form class="row g-3 needs-validation" novalidate onsubmit="return redirecionarParaSimulador()">
       <div class="col-md-6">
         <label for="firstName" class="form-label">Nome</label>
@@ -45,28 +45,28 @@
           Por favor, insira um telefone válido.
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label for="cep" class="form-label">CEP</label>
         <input type="text" class="form-control" id="cep" required onblur="buscarEndereco()">
         <div class="invalid-feedback">
           Por favor, insira um CEP válido.
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <label for="address" class="form-label">Endereço</label>
         <input type="text" class="form-control" id="address" required>
         <div class="invalid-feedback">
           Por favor, insira seu endereço.
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <label for="city" class="form-label">Cidade</label>
         <input type="text" class="form-control" id="city" required>
         <div class="invalid-feedback">
           Por favor, insira sua cidade.
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <label for="state" class="form-label">Estado</label>
         <select class="form-select" id="state" required>
           <option selected disabled value="">Escolha...</option>
@@ -77,6 +77,13 @@
         </select>
         <div class="invalid-feedback">
           Por favor, selecione um estado válido.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="zip" class="form-label">CEP</label>
+        <input type="text" class="form-control" id="zip" required>
+        <div class="invalid-feedback">
+          Por favor, insira um CEP válido.
         </div>
       </div>
       <div class="col-12">
@@ -90,7 +97,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 d-grid">
         <button class="btn btn-primary" type="submit">Cadastrar</button>
       </div>
     </form>
