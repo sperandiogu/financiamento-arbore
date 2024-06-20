@@ -5,33 +5,30 @@ const taxasJurosAnuais = {
   "Caixa": 16.17
 };
 
-function formatarNumero(campo) {
-  let valor = campo.value.replace(/\./g, '').replace(',', '.');
-  valor = parseFloat(valor);
-  if (!isNaN(valor)) {
-      campo.value = valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  } else {
-      campo.value = '';
-  }
+function formatarParaReal(element) {
+  let valor = element.value.replace(/\D/g, '');
+  valor = (valor / 100).toFixed(2) + '';
+  valor = valor.replace('.', ',');
+  valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+  element.value = valor;
 }
 
 function atualizarEntrada() {
   const campoValorImovel = document.getElementById('valor-imovel');
   let valorImovel = parseFloat(campoValorImovel.value.replace(/\./g, '').replace(',', '.'));
   if (!isNaN(valorImovel)) {
-      campoValorImovel.value = valorImovel.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      const entradaMinima = valorImovel * 0.3;
-      const entradaCampo = document.getElementById('entrada');
-      entradaCampo.value = entradaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const entradaMinima = valorImovel * 0.1;
+    const entradaCampo = document.getElementById('entrada');
+    entradaCampo.value = entradaMinima.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 }
 
 function selecionarBanco(banco) {
   const taxaJurosCampo = document.getElementById('taxa-juros');
   if (banco in taxasJurosAnuais) {
-      taxaJurosCampo.value = taxasJurosAnuais[banco];
+    taxaJurosCampo.value = taxasJurosAnuais[banco];
   } else {
-      taxaJurosCampo.value = '';
+    taxaJurosCampo.value = '';
   }
 }
 
@@ -42,13 +39,13 @@ function calcular() {
   const prazo = parseInt(document.getElementById('prazo').value);
 
   if (isNaN(valorImovel) || isNaN(entrada) || isNaN(taxaJurosAnual) || isNaN(prazo)) {
-      alert("Por favor, preencha todos os campos corretamente.");
-      return;
+    alert("Por favor, preencha todos os campos corretamente.");
+    return;
   }
 
-  if (entrada < valorImovel * 0.3) {
-      alert("A entrada não pode ser menor do que 30% do valor do imóvel.");
-      return;
+  if (entrada < valorImovel * 0.1) {
+    alert("A entrada não pode ser menor do que 30% do valor do imóvel.");
+    return;
   }
 
   // Converter taxa de juros anual para mensal
@@ -65,16 +62,16 @@ function calcular() {
   const amortizacao = valorFinanciado / prazo;
   let totalPago = 0;
   for (let i = 0; i < prazo; i++) {
-      const juros = (valorFinanciado - (i * amortizacao)) * taxaJurosMensal;
-      totalPago += (amortizacao + juros);
+    const juros = (valorFinanciado - (i * amortizacao)) * taxaJurosMensal;
+    totalPago += (amortizacao + juros);
   }
   resultado += `<p>Prestação Mensal Média (SAC): R$ ${(totalPago / prazo).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
 
   document.getElementById('resultado').innerHTML = resultado;
 }
 
-document.querySelectorAll('input[type="text"]').forEach((input) => {
+document.querySelectorAll('input[type="text"], input[type="number"]').forEach((input) => {
   input.addEventListener('input', (event) => {
-      event.target.value = event.target.value.replace(/[^\d.,]/g, '');
+    event.target.value = event.target.value.replace(/[^\d.,]/g, '');
   });
 });
