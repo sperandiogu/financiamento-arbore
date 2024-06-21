@@ -116,7 +116,7 @@ const Cadastro = () => {
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json', // Removido para evitar problemas de CORS
         },
         body: JSON.stringify(data),
       });
