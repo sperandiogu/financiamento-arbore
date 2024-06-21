@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/financiamento-arbore/static/css/main.7c6aa4dc.css",
-    "main.js": "/financiamento-arbore/static/js/main.40aa8946.js",
-    "index.html": "/financiamento-arbore/index.html",
-    "main.7c6aa4dc.css.map": "/financiamento-arbore/static/css/main.7c6aa4dc.css.map",
-    "main.40aa8946.js.map": "/financiamento-arbore/static/js/main.40aa8946.js.map"
+    "main.css": "/financiamento-arbore/simulador/static/css/main.7c6aa4dc.css",
+    "main.js": "/financiamento-arbore/simulador/static/js/main.40aa8946.js",
+    "index.html": "/financiamento-arbore/simulador/index.html",
+    "main.7c6aa4dc.css.map": "/financiamento-arbore/simulador/static/css/main.7c6aa4dc.css.map",
+    "main.40aa8946.js.map": "/financiamento-arbore/simulador/static/js/main.40aa8946.js.map"
   },
   "entrypoints": [
     "static/css/main.7c6aa4dc.css",
