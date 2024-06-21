@@ -121,13 +121,14 @@ const Cadastro = () => {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        navigate('/simulador'); // Redireciona para a tela do simulador após o envio
-      } else {
-        console.error('Erro ao enviar os dados do formulário');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
+
+      navigate('/simulador'); // Redireciona para a tela do simulador após o envio
     } catch (error) {
       console.error('Erro ao enviar os dados do formulário:', error);
+      alert('Erro ao enviar os dados do formulário. Por favor, tente novamente.');
     }
   };
 
