@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Simulador.css';
 
 const taxasJurosAnuais = {
-  "Banco do Brasil": 31.58,
+  "Brasil": 31.58,
   "Itau": 22.48,
   "Caixa": 16.17,
   "Santander": 26.00,

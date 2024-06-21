@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Cadastro.css'; // Certifique-se de criar e ajustar o arquivo CSS conforme necessário
+import './Cadastro.css';
 
 const Cadastro = () => {
   const [telefone, setTelefone] = useState('');
@@ -11,6 +11,7 @@ const Cadastro = () => {
   const [estado, setEstado] = useState('');
   const [cepValido, setCepValido] = useState(false);
   const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
   const handleTelefoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +26,15 @@ const Cadastro = () => {
   };
 
   const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const valor = event.target.value.replace(/\D/g, '');
+    let valor = event.target.value.replace(/\D/g, '');
+    if (valor.length > 5) {
+      valor = valor.replace(/^(\d{5})(\d)/, '$1-$2');
+    }
     setCep(valor);
 
-    if (valor.length === 8) {
-      fetch(`https://viacep.com.br/ws/${valor}/json/`)
+    if (valor.length === 9) { // 9 because the formatted CEP will have 9 characters (XXXXX-XXX)
+      const rawCep = valor.replace('-', '');
+      fetch(`https://viacep.com.br/ws/${rawCep}/json/`)
         .then(response => response.json())
         .then(data => {
           if (!data.erro) {
@@ -58,6 +63,7 @@ const Cadastro = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
+    setIsSubmitted(true);
     if (!form.checkValidity()) {
       event.stopPropagation();
       form.classList.add('was-validated');
@@ -71,7 +77,7 @@ const Cadastro = () => {
     <div className="container text-center">
       <h1>Cadastro</h1>
       <div className="container" id="cadastro-forms">
-        <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+        <form className={`needs-validation ${isSubmitted ? 'was-validated' : ''}`} noValidate onSubmit={handleSubmit}>
 
           <h2 className="section-title">Informações Pessoais</h2>
           <div className="row justify-content-md-center">
