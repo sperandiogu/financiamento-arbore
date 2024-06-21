@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Cadastro.css';
 
 const Cadastro = () => {
+  const [nomeCompleto, setNomeCompleto] = useState('');
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
   const [cpf, setCpf] = useState('');
@@ -15,6 +16,10 @@ const Cadastro = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
+
+  const handleNomeCompletoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNomeCompleto(event.target.value);
+  };
 
   const handleTelefoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let valor = event.target.value.replace(/\D/g, '');
@@ -82,7 +87,7 @@ const Cadastro = () => {
     setStep(step - 1);
   };
 
-  const handleFinalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFinalSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     setIsSubmitted(true);
@@ -91,8 +96,37 @@ const Cadastro = () => {
       form.classList.add('was-validated');
       return;
     }
-    // lógica de submissão do formulário
-    navigate('/simulador'); // Redireciona para a tela do simulador após o envio
+
+    const data = {
+      nomeCompleto,
+      email,
+      cpf,
+      rg,
+      dataNascimento,
+      telefone,
+      nacionalidade,
+      estadoCivil,
+      rendaMensal,
+      situacaoProfissional,
+    };
+
+    try {
+      const response = await fetch('/api/hooks/catch/18025143/2bhlz94/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        navigate('/simulador'); // Redireciona para a tela do simulador após o envio
+      } else {
+        console.error('Erro ao enviar os dados do formulário');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar os dados do formulário:', error);
+    }
   };
 
   return (
@@ -119,7 +153,9 @@ const Cadastro = () => {
                       type="text"
                       id="nome-completo"
                       name="nomeCompleto"
+                      value={nomeCompleto}
                       placeholder="Qual seu nome completo?"
+                      onChange={handleNomeCompletoChange}
                       required
                     />
                     <div className="invalid-feedback">Insira seu nome completo para continuar.</div>
@@ -139,6 +175,20 @@ const Cadastro = () => {
                       required
                     />
                     <div className="invalid-feedback">Informe o CPF antes de continuar.</div>
+                  </div>
+                </div>
+                <div className="row justify-content-md-center">
+                  <div className="col mb-3">
+                    <label className="form-label" htmlFor="rg">Número do seu RG ou RNE (opcional):</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="rg"
+                      name="rg"
+                      value={rg}
+                      placeholder="Número do seu RG ou RNE - opcional"
+                      onChange={handleRgChange}
+                    />
                   </div>
                 </div>
                 <div className="row justify-content-md-center">
