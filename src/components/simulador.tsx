@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Simulador.css';
 
 const taxasJurosAnuais = {
-  "Brasil": 31.58,
+  "Banco do Brasil": 31.58,
   "Itau": 22.48,
   "Caixa": 16.17,
   "Santander": 26.00,
@@ -58,7 +58,7 @@ function Simulador() {
     let valor = event.target.value.replace(/\D/g, '');
     valor = (valor / 100).toFixed(2) + '';
     valor = valor.replace('.', ',');
-    valor = valor.replace(/(\d)(?=(\d{3})+,)/g, '$1.');
+    valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, '$1.'); // Linha corrigida
     event.target.value = valor;
   };
 
@@ -76,7 +76,7 @@ function Simulador() {
     const valor = event.target.value;
     setValorImovel(valor);
     const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
-    const entradaCalculada = (valorNumerico * 0.3).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    const entradaCalculada = (valorNumerico * 0.3).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.'); // Linha corrigida
     setEntrada(entradaCalculada);
   };
 
