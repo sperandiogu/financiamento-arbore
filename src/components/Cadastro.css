@@ -1,0 +1,40 @@
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.section-title {
+  text-align: left;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.form-label {
+  text-align: left;
+  display: block;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.invalid-feedback {
+  text-align: left;
+  display: block;
+}
+
+.btn-primary {
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 15px;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+}
