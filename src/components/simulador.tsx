@@ -11,10 +11,12 @@ const taxasJurosAnuais = {
 
 function Simulador() {
   const [resultado, setResultado] = useState('');
+  const [valorImovel, setValorImovel] = useState('');
+  const [entrada, setEntrada] = useState('');
 
-  const calcular = (event) => {
+  const calcular = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = event.target;
+    const form = event.target as HTMLFormElement;
     if (!form.checkValidity()) {
       event.stopPropagation();
       form.classList.add('was-validated');
@@ -52,7 +54,7 @@ function Simulador() {
     setResultado(resultado);
   };
 
-  const formatarParaReal = (event) => {
+  const formatarParaReal = (event: React.ChangeEvent<HTMLInputElement>) => {
     let valor = event.target.value.replace(/\D/g, '');
     valor = (valor / 100).toFixed(2) + '';
     valor = valor.replace('.', ',');
@@ -60,14 +62,22 @@ function Simulador() {
     event.target.value = valor;
   };
 
-  const selecionarBanco = (event) => {
+  const selecionarBanco = (event: React.ChangeEvent<HTMLInputElement>) => {
     const banco = event.target.value;
-    const taxaJurosCampo = document.getElementById('taxa-juros');
+    const taxaJurosCampo = document.getElementById('taxa-juros') as HTMLInputElement;
     if (banco in taxasJurosAnuais) {
-      taxaJurosCampo.value = taxasJurosAnuais[banco];
+      taxaJurosCampo.value = taxasJurosAnuais[banco].toString();
     } else {
       taxaJurosCampo.value = '';
     }
+  };
+
+  const handleValorImovelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = event.target.value;
+    setValorImovel(valor);
+    const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+    const entradaCalculada = (valorNumerico * 0.3).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    setEntrada(entradaCalculada);
   };
 
   return (
@@ -78,14 +88,33 @@ function Simulador() {
           <div className="row justify-content-md-center">
             <div className="col mb-3">
               <label className="form-label" htmlFor="valor-imovel">Valor do Imóvel (R$):</label>
-              <input className="form-control" type="text" id="valor-imovel" name="valorImovel" required onInput={formatarParaReal} />
+              <input
+                className="form-control"
+                type="text"
+                id="valor-imovel"
+                name="valorImovel"
+                required
+                onInput={(e) => {
+                  formatarParaReal(e);
+                  handleValorImovelChange(e);
+                }}
+                value={valorImovel}
+              />
               <div className="invalid-feedback">Por favor, insira um valor válido.</div>
             </div>
           </div>
           <div className="row">
             <div className="col">
               <label className="form-label" htmlFor="entrada">Entrada (R$):</label>
-              <input className="form-control" type="text" id="entrada" name="entrada" required onBlur={formatarParaReal} />
+              <input
+                className="form-control"
+                type="text"
+                id="entrada"
+                name="entrada"
+                required
+                value={entrada}
+                readOnly
+              />
               <div className="invalid-feedback">Por favor, insira um valor válido.</div>
             </div>
           </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import Cadastro from './components/cadastro.tsx';
-import Simulador from './components/simulador.tsx';
+import Cadastro from './components/cadastro';
+import Simulador from './components/simulador';
 
 function App() {
   return (

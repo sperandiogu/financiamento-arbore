@@ -1,40 +1,26 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useBuscarEndereco } from '../hooks/useBuscarEndereco.ts';
 import './Cadastro.css';
 
 function Cadastro() {
   const navigate = useNavigate();
+  const { endereco, erro, buscarEndereco } = useBuscarEndereco();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (event.target.checkValidity()) {
+    const form = event.target as HTMLFormElement;
+    if (form.checkValidity()) {
       navigate('/simulador');
     } else {
       event.stopPropagation();
     }
-    event.target.classList.add('was-validated');
+    form.classList.add('was-validated');
   };
 
-  const buscarEndereco = async (event) => {
+  const handleCepBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     const cep = event.target.value.replace(/\D/g, '');
-    if (cep.length === 8) {
-      try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-        if (!data.erro) {
-          document.getElementById('address').value = data.logradouro;
-          document.getElementById('city').value = data.localidade;
-          document.getElementById('state').value = data.uf;
-        } else {
-          alert('CEP não encontrado.');
-        }
-      } catch (error) {
-        alert('Erro ao buscar o CEP.');
-        console.error('Erro ao buscar o CEP:', error);
-      }
-    } else {
-      alert('Por favor, insira um CEP válido.');
-    }
+    buscarEndereco(cep);
   };
 
   return (
@@ -63,29 +49,24 @@ function Cadastro() {
         </div>
         <div className="col-md-4">
           <label htmlFor="cep" className="form-label">CEP</label>
-          <input type="text" className="form-control" id="cep" required onBlur={buscarEndereco} />
+          <input type="text" className="form-control" id="cep" required onBlur={handleCepBlur} />
           <div className="invalid-feedback">Por favor, insira um CEP válido.</div>
+          {erro && <div className="text-danger">{erro}</div>}
         </div>
         <div className="col-md-8">
           <label htmlFor="address" className="form-label">Endereço</label>
-          <input type="text" className="form-control" id="address" required />
+          <input type="text" className="form-control" id="address" required value={endereco.logradouro} readOnly />
           <div className="invalid-feedback">Por favor, insira seu endereço.</div>
         </div>
         <div className="col-md-4">
           <label htmlFor="city" className="form-label">Cidade</label>
-          <input type="text" className="form-control" id="city" required />
+          <input type="text" className="form-control" id="city" required value={endereco.localidade} readOnly />
           <div className="invalid-feedback">Por favor, insira sua cidade.</div>
         </div>
         <div className="col-md-4">
           <label htmlFor="state" className="form-label">Estado</label>
-          <select className="form-select" id="state" required>
-            <option selected disabled value="">Escolha...</option>
-            <option>SP</option>
-            <option>RJ</option>
-            <option>MG</option>
-            {/* Adicione mais estados conforme necessário */}
-          </select>
-          <div className="invalid-feedback">Por favor, selecione um estado válido.</div>
+          <input type="text" className="form-control" id="state" required value={endereco.uf} readOnly />
+          <div className="invalid-feedback">Por favor, insira seu estado.</div>
         </div>
         <div className="col-12">
           <div className="form-check">
