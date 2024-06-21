@@ -58,7 +58,7 @@ function Simulador() {
     let valor = event.target.value.replace(/\D/g, '');
     valor = (valor / 100).toFixed(2) + '';
     valor = valor.replace('.', ',');
-    valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, '$1.'); // Linha corrigida
+    valor = valor.replace(/(\d)(?=(\d{3})+,)/g, '$1.'); // Linha corrigida
     event.target.value = valor;
   };
 
@@ -76,7 +76,7 @@ function Simulador() {
     const valor = event.target.value;
     setValorImovel(valor);
     const valorNumerico = parseFloat(valor.replace(/\./g, '').replace(',', '.'));
-    const entradaCalculada = (valorNumerico * 0.3).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+\,)/g, '$1.'); // Linha corrigida
+    const entradaCalculada = (valorNumerico * 0.3).toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+,)/g, '$1.'); // Linha corrigida
     setEntrada(entradaCalculada);
   };
 
