@@ -58,7 +58,7 @@ function Simulador() {
     let valor = event.target.value.replace(/\D/g, '');
     valor = (valor / 100).toFixed(2) + '';
     valor = valor.replace('.', ',');
-    valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    valor = valor.replace(/(\d)(?=(\d{3})+,)/g, '$1.');
     event.target.value = valor;
   };
 
