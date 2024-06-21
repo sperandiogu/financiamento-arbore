@@ -110,9 +110,7 @@ const Cadastro = () => {
       situacaoProfissional,
     };
 
-    const apiUrl = process.env.NODE_ENV === 'production'
-      ? 'https://hooks.zapier.com/hooks/catch/18025143/2bhlz94/'
-      : '/api/hooks/catch/18025143/2bhlz94/';
+    const apiUrl = 'https://hooks.zapier.com/hooks/catch/18025143/2bhlz94/';
 
     try {
       const response = await fetch(apiUrl, {
