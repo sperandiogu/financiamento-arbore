@@ -1,10 +1,34 @@
 .container {
-  max-width: 600px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
   margin: auto;
 }
 
-.section-title {
+.info-section {
+  flex: 1;
   text-align: left;
+  padding: 20px;
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.form-section {
+  flex: 1;
+  text-align: left;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+h1, h2, p {
+  margin: 0 0 20px 0;
+}
+
+.section-title {
   font-weight: bold;
   margin-top: 20px;
 }
@@ -12,16 +36,20 @@
 .form-label {
   text-align: left;
   display: block;
+  font-weight: bold;
 }
 
 .form-control {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 .invalid-feedback {
   text-align: left;
+  color: red;
   display: none;
 }
 
@@ -29,16 +57,39 @@
   display: block;
 }
 
+.btn-primary, .btn-secondary {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+}
+
 .btn-primary {
+  background-color: #007bff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  margin-bottom: 10px;
+}
+
+#cadastro-forms {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
   width: 100%;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .container {
-    padding: 15px;
+    flex-direction: column;
   }
 
-  .btn-primary {
+  .form-section, form {
     width: 100%;
   }
 }
