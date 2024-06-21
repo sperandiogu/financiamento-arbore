@@ -122,12 +122,12 @@ const Cadastro = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
       navigate('/simulador'); // Redireciona para a tela do simulador após o envio
     } catch (error) {
-      console.error('Erro ao enviar os dados do formulário:', error);
+      console.error('Erro ao enviar os dados do formulário:', error.message);
       alert('Erro ao enviar os dados do formulário. Por favor, tente novamente.');
     }
   };
