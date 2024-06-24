@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cadastro.css';
@@ -116,7 +117,7 @@ const Cadastro = () => {
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          // 'Content-Type': 'application/json', // Removido para evitar problemas de CORS
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
@@ -134,22 +135,27 @@ const Cadastro = () => {
 
   return (
     <div className="container">
-      <div className="info-section">
-        <img src="/path/to/icon.png" alt="Ícone" className="info-icon" />
-        <p>PASSO {step}/3</p>
-        <h2>Continue sua simulação e saiba se possui <strong>um valor pré-aprovado</strong></h2>
-        <p>Preencha as informações a seguir, para criarmos a <strong>melhor oferta de crédito</strong></p>
-        <p>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
-      </div>
-      <div className="form-section">
-        <h1>Cadastro</h1>
-        <div className="container" id="cadastro-forms">
-          <form className={`needs-validation ${isSubmitted ? 'was-validated' : ''}`} noValidate onSubmit={step === 3 ? handleFinalSubmit : handleNext}>
-            {step === 1 && (
-              <>
-                <h2 className="section-title">Informações Pessoais</h2>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+      <header className="header">
+        <img src="/path/to/logo.png" alt="Logo" />
+        <nav>
+          <a href="#help">Ajuda</a>
+        </nav>
+      </header>
+      <div className="main-content row">
+        <div className="info-section col-md-6">
+          <p>Passo {step}/3</p>
+          <h2>Continue sua simulação e saiba se possui <strong>um valor pré-aprovado</strong></h2>
+          <p>Preencha as informações a seguir, para criarmos a <strong>melhor oferta de crédito</strong></p>
+          <p>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
+        </div>
+        <div className="form-section col-md-6">
+          <h1>Cadastro</h1>
+          <div className="form-container">
+            <form className={`needs-validation ${isSubmitted ? 'was-validated' : ''}`} noValidate onSubmit={step === 3 ? handleFinalSubmit : handleNext}>
+              {step === 1 && (
+                <>
+                  <h2 className="section-title">Informações Pessoais</h2>
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="nome-completo">Nome Completo:</label>
                     <input
                       className="form-control"
@@ -163,13 +169,11 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Insira seu nome completo para continuar.</div>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="cpf">CPF:</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="number"
                       id="cpf"
                       name="cpf"
                       value={cpf}
@@ -179,13 +183,11 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Informe o CPF antes de continuar.</div>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="rg">Número do seu RG ou RNE (opcional):</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="number"
                       id="rg"
                       name="rg"
                       value={rg}
@@ -193,9 +195,7 @@ const Cadastro = () => {
                       onChange={handleRgChange}
                     />
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="data-nascimento">Data de nascimento:</label>
                     <input
                       className="form-control"
@@ -208,19 +208,17 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Verifique a data de nascimento.</div>
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            {step === 2 && (
-              <>
-                <h2 className="section-title">Informações de Contato</h2>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+              {step === 2 && (
+                <>
+                  <h2 className="section-title">Informações de Contato</h2>
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="telefone">Whatsapp:</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="tel"
                       id="telefone"
                       name="telefone"
                       value={telefone}
@@ -230,9 +228,7 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Por favor, insira um telefone válido.</div>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="email">Email:</label>
                     <input
                       className="form-control"
@@ -246,15 +242,13 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Informe o email antes de continuar.</div>
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            {step === 3 && (
-              <>
-                <h2 className="section-title">Outras Informações</h2>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+              {step === 3 && (
+                <>
+                  <h2 className="section-title">Outras Informações</h2>
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="nacionalidade">País da sua nacionalidade:</label>
                     <select
                       className="form-control"
@@ -268,9 +262,7 @@ const Cadastro = () => {
                       {/* Adicione outras opções conforme necessário */}
                     </select>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="estado-civil">Estado civil:</label>
                     <select
                       className="form-control"
@@ -290,9 +282,7 @@ const Cadastro = () => {
                     </select>
                     <div className="invalid-feedback">Selecione uma opção para continuar.</div>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="renda-mensal">Renda mensal da sua família:</label>
                     <input
                       className="form-control"
@@ -306,9 +296,7 @@ const Cadastro = () => {
                     />
                     <div className="invalid-feedback">Preencha esse campo para continuar.</div>
                   </div>
-                </div>
-                <div className="row justify-content-md-center">
-                  <div className="col mb-3">
+                  <div className="mb-3">
                     <label className="form-label" htmlFor="situacao-profissional">Situação profissional:</label>
                     <select
                       className="form-control"
@@ -327,19 +315,17 @@ const Cadastro = () => {
                     </select>
                     <div className="invalid-feedback">Preencha esse campo para continuar.</div>
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            <div className="row gy-2 gx-3 align-items-center">
-              <div className="col d-grid gap-2">
+              <div className="d-grid">
                 {step > 1 && (
-                  <button type="button" className="btn btn-secondary" onClick={handlePrev}>Voltar</button>
+                  <button type="button" className="btn btn-link btn-voltar" onClick={handlePrev}>Voltar</button>
                 )}
-                <button className="btn btn-primary" type="submit">{step === 3 ? 'Cadastrar' : 'Continuar'}</button>
+                <button className="btn btn-primary btn-continuar" type="submit">{step === 3 ? 'Cadastrar' : 'Continuar'}</button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
