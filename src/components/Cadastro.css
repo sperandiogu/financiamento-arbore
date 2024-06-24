@@ -8,25 +8,30 @@
   border-bottom: 1.5px solid #A6A6A6;
 }
 
+.logo-arbore {
+  height: 40px;
+}
+
 /* Estilos adicionais para o formulário */
 .form-container {
   width: 100%;
 }
 
 .form-container .form-label {
-  color: #267E3E;
-  font-family: Inter, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 5px;
+  color: #0C0B0F;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 .form-container .form-control {
   width: 100%;
-  padding: 10px;
+  padding: 16px;
   border-radius: 5px;
   border: 1px solid #267E3E;
-  background: #FFF;
+  background: #Fafafa;
   font-family: Inter, sans-serif;
   font-size: 16px;
   color: #0C0B0F;
@@ -48,14 +53,14 @@
 
 .form-container .section-title {
   font-family: Inter, sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  color: #267E3E;
+  color: #0C0B0F;
   margin-bottom: 15px;
 }
 
 .form-container .btn-continuar {
-  padding: 10px 20px;
+  padding: 16px;
   font-family: Inter, sans-serif;
   font-size: 16px;
   font-weight: 600;
@@ -96,20 +101,26 @@
   padding: 20px;
 }
 
-.form-section {
-  flex: 1;
-  padding: 20px;
-  background: #FAFAFA;
-  border-radius: 5px;
-  border: 1px solid #267E3E;
-}
 
-.btn-voltar{
+.btn-voltar {
   margin: 0px !important;
   color: #1f6732;
   text-decoration: none;
 }
 
-.btn-voltar:hover{
+.btn-voltar:hover {
   color: #267E3E;
+}
+
+.icon-ctg {
+  margin-bottom: 10px;
+}
+
+.contg-passos {
+  color: #0C0B0F;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
