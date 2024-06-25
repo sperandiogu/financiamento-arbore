@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import './Simulador.css';
 
 const taxasJurosAnuais = {
-  "Banco do Brasil": { taxa: 31.58, imagem: 'bb.png' },
-  "Itau": { taxa: 22.48, imagem: 'itau.png' },
-  "Caixa": { taxa: 16.17, imagem: 'caixa.png' },
-  "Santander": { taxa: 26.00, imagem: 'santander.png' },
-  "Nubank": { taxa: 2.00, imagem: 'nubank.png' }
+  "Banco do Brasil": { taxa: 10.06, imagem: 'bb.png' },
+  "Itau": { taxa: 10.28, imagem: 'itau.png' },
+  "Caixa": { taxa: 10.26, imagem: 'caixa.png' },
+  "Santander": { taxa: 11.34, imagem: 'santander.png' },
+  "Sicredi": { taxa: 13.05, imagem: 'sicredi.png' }
 };
 
 function Simulador() {
