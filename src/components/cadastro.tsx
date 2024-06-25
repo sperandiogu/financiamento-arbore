@@ -110,9 +110,11 @@ const Cadastro = () => {
       situacaoProfissional,
     };
 
-    const apiUrl = 'https://hooks.zapier.com/hooks/catch/18025143/2bhlz94/';
+    // Use a nova URL do Make
+    const apiUrl = 'https://hook.us1.make.com/042oqm2cszci4bkq47dtxk6d596uqnmu';
 
     try {
+      console.log('Enviando dados para Make:', data);
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -120,6 +122,8 @@ const Cadastro = () => {
         },
         body: JSON.stringify(data),
       });
+
+      console.log('Resposta do Make:', response);
 
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.statusText}`);
@@ -196,7 +200,7 @@ const Cadastro = () => {
                     <label className="form-label" htmlFor="rg">Número do seu RG ou RNE (opcional):</label>
                     <input
                       className="form-control"
-                      type="text"
+                      type="number"
                       id="rg"
                       name="rg"
                       value={rg}

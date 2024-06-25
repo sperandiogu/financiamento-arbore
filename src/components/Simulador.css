@@ -1,30 +1,142 @@
-.btn-check:checked+.btn-bb {
-  background-color: #FCFA64 !important;
-  transition: 0.5s;
+/* Estilos para o Header */
+.header {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid #A6A6A6;
 }
 
-.btn-check:checked+.btn-itau {
-  background-color: #FF6200 !important;
-  transition: 0.5s;
+.logo-arbore {
+  height: 40px;
 }
 
-.btn-check:checked+.btn-caixa {
-  background-color: #0070AF !important;
-  transition: 0.5s;
+/* Estilos adicionais para o formulário */
+.form-container {
+  width: 100%;
 }
 
-.btn-check:checked+.btn-santander {
-  background-color: #EA1D25 !important;
-  transition: 0.5s;
+.form-container .form-label {
+  color: #0C0B0F;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
-.btn-check:checked+.btn-nubank {
-  background-color: #820AD1 !important;
-  transition: 0.5s;
+.form-container .form-control {
+  width: 100%;
+  padding: 16px;
+  border-radius: 5px;
+  border: 1px solid #267E3E;
+  background: #Fafafa;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  color: #0C0B0F;
 }
 
-.banco-logo {
-  width: 90px;
-  height: auto;
+.form-container .form-control::placeholder {
+  color: #A6A6A6;
+}
+
+.form-container .form-control:focus {
+  border-color: #267E3E;
+  box-shadow: 0 0 0 3px rgba(38, 126, 62, 0.2);
+}
+
+.form-container .invalid-feedback {
+  color: #d9534f;
+  font-size: 12px;
+}
+
+.form-container .section-title {
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0C0B0F;
+  margin-bottom: 15px;
+}
+
+.form-container .btn-continuar {
+  padding: 16px;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  background-color: #267E3E;
+  color: #FFF;
   cursor: pointer;
+  width: 100%;
+}
+
+.form-container .btn-continuar:hover {
+  background-color: #1f6732;
+}
+
+.form-container .btn-continuar:disabled {
+  background-color: #A6A6A6;
+  cursor: not-allowed;
+}
+
+/* Estilos para layout */
+.container {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.main-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.info-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.banco-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.banco-label img {
+  max-width: 80px;
+  height: auto;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.banco-label:hover img,
+.banco-label img:active {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(38, 126, 62, 0.5);
+}
+
+.resultado-container {
+  margin-top: 20px;
+  width: 100%; /* Garante que o resultado seja do tamanho do grid */
+}
+
+.resultado-item {
+  background: #F5F5F5;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.resultado-item p {
+  margin: 0;
+}
+
+.resultado-item .valor {
+  font-size: 24px;
+  color: #267E3E;
+  font-weight: bold;
 }
