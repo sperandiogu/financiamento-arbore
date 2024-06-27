@@ -1,157 +1,125 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Simulador.css';
 
 const taxasJurosAnuais = {
-  "Banco do Brasil": { taxa: 31.58, imagem: 'bb.png' },
-  "Itau": { taxa: 22.48, imagem: 'itau.png' },
-  "Caixa": { taxa: 16.17, imagem: 'caixa.png' },
-  "Santander": { taxa: 26.00, imagem: 'santander.png' },
-  "Nubank": { taxa: 2.00, imagem: 'nubank.png' }
+  "Banco do Brasil": 31.58,
+  "Itau": 22.48,
+  "Caixa": 16.17,
+  "Santander": 26.00,
+  "Nubank": 2.00
 };
 
 function Simulador() {
-  const [prazo, setPrazo] = useState(3); // Prazo em anos
-  const [bancoSelecionado, setBancoSelecionado] = useState('');
-  const [valorImovel, setValorImovel] = useState('');
-  const [entrada, setEntrada] = useState('');
-  const navigate = useNavigate();
+  const [resultado, setResultado] = useState('');
 
-  const handlePrazoChange = (event) => {
-    setPrazo(event.target.value);
-  };
-
-  const handleValorImovelChange = (event) => {
-    const valor = event.target.value.replace(/\D/g, '');
-    setValorImovel(valor);
-    setEntrada((valor * 0.3).toFixed(2)); // Calcula a entrada automaticamente
-  };
-
-  const handleBancoChange = (event) => {
-    setBancoSelecionado(event.target.value);
-  };
-
-  const calcular = (event) => {
+  const calcular = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!bancoSelecionado || !valorImovel || !entrada) {
+    const form = event.target as HTMLFormElement;
+    if (!form.checkValidity()) {
+      event.stopPropagation();
+      form.classList.add('was-validated');
       return;
     }
 
-    const taxaJurosAnual = taxasJurosAnuais[bancoSelecionado].taxa / 100;
+    const valorImovel = parseFloat(form.valorImovel.value.replace(/\./g, '').replace(',', '.'));
+    const entrada = parseFloat(form.entrada.value.replace(/\./g, '').replace(',', '.'));
+    const taxaJurosAnual = parseFloat(form.taxaJuros.value) / 100;
+    const prazo = parseInt(form.prazo.value);
+
+    if (entrada < valorImovel * 0.3) {
+      form.entrada.setCustomValidity('A entrada não pode ser menor do que 30% do valor do imóvel.');
+      form.entrada.reportValidity();
+      return;
+    } else {
+      form.entrada.setCustomValidity('');
+    }
+
     const taxaJurosMensal = Math.pow(1 + taxaJurosAnual, 1 / 12) - 1;
     const valorFinanciado = valorImovel - entrada;
+    let resultado = '';
 
-    const prazoMeses = prazo * 12; // Converte o prazo de anos para meses
-    const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
+    const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazo));
+    resultado += `<p>Prestação Mensal (PRICE): R$ ${prestacaoPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
 
-    const data = {
-      valorTotalFinanciamento: (prestacaoPrice * prazoMeses).toFixed(2),
-      valorTotalEntrada: parseFloat(entrada),
-      taxaJurosBanco: (taxasJurosAnuais[bancoSelecionado].taxa).toFixed(2),
-      bancoSelecionado: bancoSelecionado,
-      tempoSelecionado: prazoMeses
-    };
+    const amortizacao = valorFinanciado / prazo;
+    let totalPago = 0;
+    for (let i = 0; i < prazo; i++) {
+      const juros = (valorFinanciado - (i * amortizacao)) * taxaJurosMensal;
+      totalPago += (amortizacao + juros);
+    }
+    resultado += `<p>Prestação Mensal Média (SAC): R$ ${(totalPago / prazo).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
 
-    navigate('/dashboard', { state: { data } });
+    setResultado(resultado);
   };
 
-  const formatarValor = (valor) => {
-    if (!valor) return '';
-    return (parseFloat(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const formatarParaReal = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let valor = event.target.value.replace(/\D/g, '');
+    valor = (valor / 100).toFixed(2) + '';
+    valor = valor.replace('.', ',');
+    valor = valor.replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    event.target.value = valor;
+  };
+
+  const selecionarBanco = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const banco = event.target.value;
+    const taxaJurosCampo = document.getElementById('taxa-juros') as HTMLInputElement;
+    if (banco in taxasJurosAnuais) {
+      taxaJurosCampo.value = taxasJurosAnuais[banco].toString();
+    } else {
+      taxaJurosCampo.value = '';
+    }
   };
 
   return (
-    <div className="container">
-      <div className="main-content row">
-        <div className="info-section col-md-6">
-          <div className="icon-ctg">
-            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="90" height="90" rx="5" fill="#267E3E" />
-              {/* SVG content here */}
-            </svg>
+    <div className="container text-center">
+      <h1>Simulador Financiamento</h1>
+      <div className="container" id="simulador-forms">
+        <form className="needs-validation" noValidate onSubmit={calcular}>
+          <div className="row justify-content-md-center">
+            <div className="col mb-3">
+              <label className="form-label" htmlFor="valor-imovel">Valor do Imóvel (R$):</label>
+              <input className="form-control" type="text" id="valor-imovel" name="valorImovel" required onInput={formatarParaReal} />
+              <div className="invalid-feedback">Por favor, insira um valor válido.</div>
+            </div>
           </div>
-          <p className="contg-passos">Preencha as informações ao lado para simular o financiamento do seu imóvel.</p>
-        </div>
-        <div className="form-section col-md-6">
-          <div className="form-container">
-            <form onSubmit={calcular}>
-              <h2 className="section-title">Simulação de Financiamento</h2>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="valor-imovel">Valor do Imóvel:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="valor-imovel"
-                  name="valorImovel"
-                  value={formatarValor(valorImovel)}
-                  onChange={handleValorImovelChange}
-                  required
-                />
-                <div className="invalid-feedback">Informe o valor do imóvel.</div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="entrada">Valor de Entrada:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="entrada"
-                  name="entrada"
-                  value={formatarValor(entrada)}
-                  readOnly
-                />
-                <div className="invalid-feedback">Informe o valor da entrada.</div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label" htmlFor="prazo">Prazo (anos):</label>
-                <input
-                  type="range"
-                  className="form-range"
-                  id="prazo"
-                  name="prazo"
-                  min="3"
-                  max="30"
-                  value={prazo}
-                  onChange={handlePrazoChange}
-                />
-                <div>{prazo} anos</div>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Selecione o Banco:</label>
-                <div className="banco-container">
-                  {Object.keys(taxasJurosAnuais).map((banco) => (
-                    <React.Fragment key={banco}>
-                      <input
-                        type="radio"
-                        className="btn-check"
-                        name="banco"
-                        id={banco}
-                        value={banco}
-                        autoComplete="off"
-                        onChange={handleBancoChange}
-                        required
-                      />
-                      <label
-                        className="btn btn-outline-primary banco-label"
-                        htmlFor={banco}
-                      >
-                        <img
-                          src={`/sources/img/${taxasJurosAnuais[banco].imagem}`}
-                          alt={banco}
-                          className="img-thumbnail banco-img"
-                        />
-                      </label>
-                    </React.Fragment>
-                  ))}
-                </div>
-                <div className="invalid-feedback">Por favor, selecione um banco.</div>
-              </div>
-              <div className="d-grid">
-                <button className="btn btn-primary btn-continuar" type="submit">Simular</button>
-              </div>
-            </form>
+          <div className="row">
+            <div className="col">
+              <label className="form-label" htmlFor="entrada">Entrada (R$):</label>
+              <input className="form-control" type="text" id="entrada" name="entrada" required onBlur={formatarParaReal} />
+              <div className="invalid-feedback">Por favor, insira um valor válido.</div>
+            </div>
           </div>
-        </div>
+          <div className="row">
+            <div className="col">
+              <label className="form-label" htmlFor="prazo">Prazo (meses):</label>
+              <input className="form-control" type="number" id="prazo" name="prazo" required />
+              <div className="invalid-feedback">Por favor, insira um prazo válido.</div>
+            </div>
+          </div>
+          <div className="row justify-content-md-center">
+            <div className="col">
+              <label className="form-label">Selecione o Banco:</label>
+              <div className="d-flex justify-content-around btn-group">
+                {Object.keys(taxasJurosAnuais).map((banco) => (
+                  <React.Fragment key={banco}>
+                    <input type="radio" className="btn-check" name="banco" id={banco} value={banco} autoComplete="off" onClick={selecionarBanco} required />
+                    <label className="btn btn-outline-primary" htmlFor={banco}>
+                      <img src={`/sources/img/${banco.toLowerCase().replace(/ /g, '')}.png`} alt={banco} className="img-thumbnail" />
+                    </label>
+                  </React.Fragment>
+                ))}
+              </div>
+              <div className="invalid-feedback">Por favor, selecione um banco.</div>
+            </div>
+          </div>
+          <div className="row gy-2 gx-3 align-items-center">
+            <div className="col d-grid gap-2">
+              <button className="btn btn-primary calculo" type="submit">Calcular</button>
+            </div>
+          </div>
+          <input type="hidden" id="taxa-juros" name="taxaJuros" />
+        </form>
+        <div id="resultado" dangerouslySetInnerHTML={{ __html: resultado }}></div>
       </div>
     </div>
   );
