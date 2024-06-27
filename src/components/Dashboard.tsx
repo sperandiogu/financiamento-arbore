@@ -1,11 +1,13 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Chart, registerables } from 'chart.js';
 import React from 'react';
-import './Dashboard.css';
-import LineChart from './LineChart.tsx';
-import PieChart from './PieChart.tsx';
-import Sidebar from './Sidebar.tsx';
-import StatCard from './StatCard.tsx';
+import { Line, Pie } from 'react-chartjs-2';
 
-const Dashboard = ({ data }) => {
+Chart.register(...registerables);
+
+const Dashboard = ({ location }) => {
+  const data = location.state?.data;
+
   if (!data) {
     return <div>Loading...</div>;
   }
@@ -40,27 +42,71 @@ const Dashboard = ({ data }) => {
   };
 
   return (
-    <div className="dashboard">
-      <Sidebar />
-      <div className="dashboard-content">
-        <header>
-          <h1>Dashboard</h1>
-        </header>
-        <div className="stats">
-          <StatCard title="Valor Total do Financiamento" value={`R$ ${valorTotalFinanciamento}`} />
-          <StatCard title="Valor Total da Entrada" value={`R$ ${valorTotalEntrada}`} />
-          <StatCard title="Taxa de Juros do Banco Selecionado" value={`${taxaJurosBanco}%`} />
-          <StatCard title="Banco Selecionado" value={bancoSelecionado} />
-          <StatCard title="Tempo Selecionado" value={`${tempoSelecionado} meses`} />
-        </div>
-        <div className="charts">
-          <div className="chart">
-            <h2>Evolução das Parcelas</h2>
-            <LineChart data={lineChartData} />
+    <div className="container">
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 className="h2">Dashboard</h1>
+      </div>
+      <div className="row mb-3">
+        <div className="col-md-4">
+          <div className="card text-white bg-primary mb-3">
+            <div className="card-header">Valor Total do Financiamento</div>
+            <div className="card-body">
+              <h5 className="card-title">R$ {valorTotalFinanciamento.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h5>
+            </div>
           </div>
-          <div className="chart">
-            <h2>Divisão de Financiamento e Juros</h2>
-            <PieChart data={pieChartData} />
+        </div>
+        <div className="col-md-4">
+          <div className="card text-white bg-success mb-3">
+            <div className="card-header">Valor Total da Entrada</div>
+            <div className="card-body">
+              <h5 className="card-title">R$ {valorTotalEntrada.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h5>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card text-white bg-warning mb-3">
+            <div className="card-header">Taxa de Juros do Banco Selecionado</div>
+            <div className="card-body">
+              <h5 className="card-title">{taxaJurosBanco}%</h5>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card text-white bg-info mb-3">
+            <div className="card-header">Banco Selecionado</div>
+            <div className="card-body">
+              <h5 className="card-title">{bancoSelecionado}</h5>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card text-white bg-secondary mb-3">
+            <div className="card-header">Tempo Selecionado</div>
+            <div className="card-body">
+              <h5 className="card-title">{tempoSelecionado} meses</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-xl-8 col-lg-7">
+          <div className="card mb-4">
+            <div className="card-header">
+              Evolução das Parcelas
+            </div>
+            <div className="card-body">
+              <Line data={lineChartData} />
+            </div>
+          </div>
+        </div>
+        <div className="col-xl-4 col-lg-5">
+          <div className="card mb-4">
+            <div className="card-header">
+              Divisão de Financiamento e Juros
+            </div>
+            <div className="card-body">
+              <Pie data={pieChartData} />
+            </div>
           </div>
         </div>
       </div>

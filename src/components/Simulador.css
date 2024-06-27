@@ -5,7 +5,6 @@
 
 .form-container .form-label {
   color: #0C0B0F;
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -18,7 +17,6 @@
   border-radius: 5px;
   border: 1px solid #267E3E;
   background: #Fafafa;
-  font-family: Inter, sans-serif;
   font-size: 16px;
   color: #0C0B0F;
 }
@@ -38,7 +36,6 @@
 }
 
 .form-container .section-title {
-  font-family: Inter, sans-serif;
   font-size: 20px;
   font-weight: 600;
   color: #0C0B0F;
@@ -47,7 +44,6 @@
 
 .form-container .btn-continuar {
   padding: 16px;
-  font-family: Inter, sans-serif;
   font-size: 16px;
   font-weight: 600;
   border-radius: 5px;
@@ -103,7 +99,6 @@
 
 .contg-passos {
   color: #0C0B0F;
-  font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;

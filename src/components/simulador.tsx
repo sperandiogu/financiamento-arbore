@@ -11,7 +11,6 @@ const taxasJurosAnuais = {
 };
 
 function Simulador() {
-  const [resultado, setResultado] = useState('');
   const [prazo, setPrazo] = useState(3); // Prazo em anos
   const [bancoSelecionado, setBancoSelecionado] = useState('');
   const [valorImovel, setValorImovel] = useState('');
@@ -24,9 +23,8 @@ function Simulador() {
 
   const handleValorImovelChange = (event) => {
     const valor = event.target.value.replace(/\D/g, '');
-    const valorFormatado = (parseInt(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    setValorImovel(valorFormatado);
-    setEntrada(((parseInt(valor) / 100) * 0.3).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+    setValorImovel(valor);
+    setEntrada((valor * 0.3).toFixed(2)); // Calcula a entrada automaticamente
   };
 
   const handleBancoChange = (event) => {
@@ -39,38 +37,32 @@ function Simulador() {
       return;
     }
 
-    const valorImovelNumerico = parseFloat(valorImovel.replace(/\D/g, '')) / 100;
-    const entradaNumerica = parseFloat(entrada.replace(/\D/g, '')) / 100;
-
     const taxaJurosAnual = taxasJurosAnuais[bancoSelecionado].taxa / 100;
     const taxaJurosMensal = Math.pow(1 + taxaJurosAnual, 1 / 12) - 1;
-    const valorFinanciado = valorImovelNumerico - entradaNumerica;
+    const valorFinanciado = valorImovel - entrada;
 
     const prazoMeses = prazo * 12; // Converte o prazo de anos para meses
     const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
-    const totalJuros = (prestacaoPrice * prazoMeses) - valorFinanciado;
 
-    const resultado = {
-      prestacaoPrice,
-      valorFinanciado,
-      totalJuros,
+    const data = {
+      valorTotalFinanciamento: (prestacaoPrice * prazoMeses).toFixed(2),
+      valorTotalEntrada: parseFloat(entrada),
+      taxaJurosBanco: (taxasJurosAnuais[bancoSelecionado].taxa).toFixed(2),
+      bancoSelecionado: bancoSelecionado,
+      tempoSelecionado: prazoMeses
     };
 
-    navigate('/dashboard', {
-      state: {
-        resultado,
-        valorTotalFinanciamento: (prestacaoPrice * prazoMeses).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-        valorEntrada: entrada,
-        taxaJuros: taxasJurosAnuais[bancoSelecionado].taxa,
-        bancoSelecionado,
-        prazoAnos: prazo,
-        prazoMeses,
-      }
-    });
+    navigate('/dashboard', { state: { data } });
   };
 
   return (
     <div className="container">
+      <header className="header">
+        <img className="logo-arbore img-fluid" src="https://arboreengenharia.com.br/wp-content/uploads/2022/11/logo-arbore-animado.gif" alt="Logo" />
+        <nav>
+          <a className="btn-voltar" href="#help">Ajuda</a>
+        </nav>
+      </header>
       <div className="main-content row">
         <div className="info-section col-md-6">
           <div className="icon-ctg">
