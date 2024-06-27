@@ -30,7 +30,7 @@
   padding: 16px;
   border-radius: 5px;
   border: 1px solid #267E3E;
-  background: #Fafafa;
+  background: #FAFAFA;
   font-family: Inter, sans-serif;
   font-size: 16px;
   color: #0C0B0F;
@@ -87,12 +87,14 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  overflow-x: hidden; /* Impede o scroll horizontal */
 }
 
 .main-content {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
 }
 
 .info-section {
@@ -100,25 +102,64 @@
   padding: 20px;
 }
 
-
-.btn-voltar {
-  margin: 0px !important;
-  color: #1f6732;
-  text-decoration: none;
+.banco-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.btn-voltar:hover {
-  color: #267E3E;
+.banco-label img {
+  max-width: 80px;
+  height: auto;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.icon-ctg {
+.banco-label:hover img,
+.banco-label img:active {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(38, 126, 62, 0.5);
+}
+
+.resultado-container {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.resultado-item {
+  background: #F5F5F5;
+  padding: 10px;
+  border-radius: 5px;
   margin-bottom: 10px;
 }
 
-.contg-passos {
-  color: #0C0B0F;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+.resultado-item p {
+  margin: 0;
+}
+
+.resultado-item .valor {
+  font-size: 24px;
+  color: #267E3E;
+  font-weight: bold;
+}
+
+/* Responsividade adicional */
+@media (max-width: 768px) {
+  .info-section, .form-section {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .banco-label img {
+    max-width: 60px;
+  }
+
+  .form-container .form-control, .form-container .btn-continuar {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .form-container .section-title {
+    font-size: 18px;
+  }
 }
