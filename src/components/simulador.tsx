@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Simulador.css';
@@ -55,51 +56,51 @@ function Simulador() {
     navigate('/dashboard', { state: { data } });
   };
 
+  const formatarValor = (valor) => {
+    if (!valor) return '';
+    return (parseFloat(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
   return (
     <div className="container">
-      <header className="header">
-        <img className="logo-arbore img-fluid" src="https://arboreengenharia.com.br/wp-content/uploads/2022/11/logo-arbore-animado.gif" alt="Logo" />
-        <nav>
-          <a className="btn-voltar" href="#help">Ajuda</a>
-        </nav>
-      </header>
       <div className="main-content row">
         <div className="info-section col-md-6">
           <div className="icon-ctg">
-            {/* Ícone */}
+            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="90" height="90" rx="5" fill="#267E3E" />
+              {/* SVG content here */}
+            </svg>
           </div>
-          <p className="contg-passos">Simulador de Financiamento</p>
-          <h2>Preencha os dados para calcular as parcelas do seu financiamento</h2>
+          <p className="contg-passos">Preencha as informações ao lado para simular o financiamento do seu imóvel.</p>
         </div>
         <div className="form-section col-md-6">
           <div className="form-container">
-            <form onSubmit={calcular} className="needs-validation" noValidate>
+            <form onSubmit={calcular}>
+              <h2 className="section-title">Simulação de Financiamento</h2>
               <div className="mb-3">
-                <label className="form-label" htmlFor="valor-imovel">Valor do Imóvel (R$):</label>
+                <label className="form-label" htmlFor="valor-imovel">Valor do Imóvel:</label>
                 <input
-                  className="form-control"
                   type="text"
+                  className="form-control"
                   id="valor-imovel"
                   name="valorImovel"
-                  value={valorImovel}
+                  value={formatarValor(valorImovel)}
                   onChange={handleValorImovelChange}
-                  placeholder="Digite o valor do imóvel"
                   required
                 />
-                <div className="invalid-feedback">Por favor, insira um valor válido.</div>
+                <div className="invalid-feedback">Informe o valor do imóvel.</div>
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="entrada">Entrada (R$):</label>
+                <label className="form-label" htmlFor="entrada">Valor de Entrada:</label>
                 <input
-                  className="form-control"
                   type="text"
+                  className="form-control"
                   id="entrada"
                   name="entrada"
-                  value={entrada}
-                  placeholder="Digite o valor da entrada"
+                  value={formatarValor(entrada)}
                   readOnly
                 />
-                <div className="invalid-feedback">Por favor, insira um valor válido.</div>
+                <div className="invalid-feedback">Informe o valor da entrada.</div>
               </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="prazo">Prazo (anos):</label>
@@ -117,7 +118,7 @@ function Simulador() {
               </div>
               <div className="mb-3">
                 <label className="form-label">Selecione o Banco:</label>
-                <div className="d-flex justify-content-around banco-container">
+                <div className="banco-container">
                   {Object.keys(taxasJurosAnuais).map((banco) => (
                     <React.Fragment key={banco}>
                       <input
@@ -130,7 +131,10 @@ function Simulador() {
                         onChange={handleBancoChange}
                         required
                       />
-                      <label className="btn btn-outline-primary banco-label" htmlFor={banco}>
+                      <label
+                        className="btn btn-outline-primary banco-label"
+                        htmlFor={banco}
+                      >
                         <img
                           src={`/sources/img/${taxasJurosAnuais[banco].imagem}`}
                           alt={banco}
