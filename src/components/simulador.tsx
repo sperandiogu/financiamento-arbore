@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Simulador.css';
 
 const taxasJurosAnuais = {
-  "Banco do Brasil": { taxa: 10.06, imagem: 'bb.png' },
-  "Itau": { taxa: 10.28, imagem: 'itau.png' },
-  "Caixa": { taxa: 10.26, imagem: 'caixa.png' },
-  "Santander": { taxa: 11.34, imagem: 'santander.png' },
-  "Sicredi": { taxa: 13.05, imagem: 'sicredi.png' }
+  "Banco do Brasil": { taxa: 31.58, imagem: 'bb.png' },
+  "Itau": { taxa: 22.48, imagem: 'itau.png' },
+  "Caixa": { taxa: 16.17, imagem: 'caixa.png' },
+  "Santander": { taxa: 26.00, imagem: 'santander.png' },
+  "Nubank": { taxa: 2.00, imagem: 'nubank.png' }
 };
 
 function Simulador() {
@@ -15,6 +16,7 @@ function Simulador() {
   const [bancoSelecionado, setBancoSelecionado] = useState('');
   const [valorImovel, setValorImovel] = useState('');
   const [entrada, setEntrada] = useState('');
+  const navigate = useNavigate();
 
   const handlePrazoChange = (event) => {
     setPrazo(event.target.value);
@@ -22,10 +24,9 @@ function Simulador() {
 
   const handleValorImovelChange = (event) => {
     const valor = event.target.value.replace(/\D/g, '');
-    const valorFormatado = (valor / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const valorFormatado = (parseInt(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     setValorImovel(valorFormatado);
-    const entradaCalculada = ((valor * 0.3) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    setEntrada(entradaCalculada); // Calcula a entrada automaticamente
+    setEntrada(((parseInt(valor) / 100) * 0.3).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
   };
 
   const handleBancoChange = (event) => {
@@ -38,38 +39,38 @@ function Simulador() {
       return;
     }
 
-    const valorImovelNum = parseFloat(valorImovel.replace(/\D/g, '')) / 100;
-    const entradaNum = parseFloat(entrada.replace(/\D/g, '')) / 100;
+    const valorImovelNumerico = parseFloat(valorImovel.replace(/\D/g, '')) / 100;
+    const entradaNumerica = parseFloat(entrada.replace(/\D/g, '')) / 100;
 
     const taxaJurosAnual = taxasJurosAnuais[bancoSelecionado].taxa / 100;
     const taxaJurosMensal = Math.pow(1 + taxaJurosAnual, 1 / 12) - 1;
-    const valorFinanciado = valorImovelNum - entradaNum;
+    const valorFinanciado = valorImovelNumerico - entradaNumerica;
 
     const prazoMeses = prazo * 12; // Converte o prazo de anos para meses
     const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
+    const totalJuros = (prestacaoPrice * prazoMeses) - valorFinanciado;
 
-    const resultado = `
-      <div class="resultado-item">
-        <p>Prestação Mensal (PRICE):</p>
-        <p class="valor">R$ ${prestacaoPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-      </div>
-      <div class="resultado-item">
-        <p>Valor Total do Financiamento:</p>
-        <p class="valor">R$ ${(prestacaoPrice * prazoMeses).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-      </div>
-    `;
+    const resultado = {
+      prestacaoPrice,
+      valorFinanciado,
+      totalJuros,
+    };
 
-    setResultado(resultado);
+    navigate('/dashboard', {
+      state: {
+        resultado,
+        valorTotalFinanciamento: (prestacaoPrice * prazoMeses).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+        valorEntrada: entrada,
+        taxaJuros: taxasJurosAnuais[bancoSelecionado].taxa,
+        bancoSelecionado,
+        prazoAnos: prazo,
+        prazoMeses,
+      }
+    });
   };
 
   return (
     <div className="container">
-      <header className="header">
-        <img className="logo-arbore img-fluid" src="https://arboreengenharia.com.br/wp-content/uploads/2022/11/logo-arbore-animado.gif" alt="Logo" />
-        <nav>
-          <a className="btn-voltar" href="#help">Ajuda</a>
-        </nav>
-      </header>
       <div className="main-content row">
         <div className="info-section col-md-6">
           <div className="icon-ctg">
@@ -124,7 +125,7 @@ function Simulador() {
               </div>
               <div className="mb-3">
                 <label className="form-label">Selecione o Banco:</label>
-                <div className="d-flex justify-content-between flex-wrap banco-container">
+                <div className="d-flex justify-content-around banco-container">
                   {Object.keys(taxasJurosAnuais).map((banco) => (
                     <React.Fragment key={banco}>
                       <input
@@ -141,7 +142,7 @@ function Simulador() {
                         <img
                           src={`/sources/img/${taxasJurosAnuais[banco].imagem}`}
                           alt={banco}
-                          className="img-fluid banco-img"
+                          className="img-thumbnail banco-img"
                         />
                       </label>
                     </React.Fragment>
@@ -153,7 +154,6 @@ function Simulador() {
                 <button className="btn btn-primary btn-continuar" type="submit">Simular</button>
               </div>
             </form>
-            <div id="resultado" className="resultado-container" dangerouslySetInnerHTML={{ __html: resultado }}></div>
           </div>
         </div>
       </div>
