@@ -19,15 +19,17 @@ const App = () => {
 
   return (
     <Router>
-      <Header />
-      <StepProgress currentStep={currentStep} />
-      <Routes>
-        <Route path="/" element={<Cadastro onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
-        <Route path="/simulador" element={<Simulador onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <div>
+        <Header />
+        <StepProgress currentStep={currentStep} />
+        <Routes>
+          <Route path="/" element={<Cadastro onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
+          <Route path="/simulador" element={<Simulador onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </div>
     </Router>
   );
-};
+}
 
 export default App;
