@@ -1,338 +1,277 @@
-import React, { useState } from 'react';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cadastro.css';
+import MaskedInput from './MaskedInput.tsx'; // Importar o novo componente MaskedInput
 
-const Cadastro = () => {
-  const [nomeCompleto, setNomeCompleto] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [email, setEmail] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [rg, setRg] = useState('');
-  const [dataNascimento, setDataNascimento] = useState('');
-  const [nacionalidade, setNacionalidade] = useState('Brasil');
-  const [estadoCivil, setEstadoCivil] = useState('');
-  const [rendaMensal, setRendaMensal] = useState('');
-  const [situacaoProfissional, setSituacaoProfissional] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [step, setStep] = useState(1);
+const Cadastro = ({ onNext, onBack, currentStep }) => {
+  const [etapa, setEtapa] = useState(1);
+  const [dadosPessoais, setDadosPessoais] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+    dataNascimento: ''
+  });
+  const [dadosAdicionais, setDadosAdicionais] = useState({
+    cpf: '',
+    estadoCivil: '',
+    renda: '',
+    situacaoProfissional: ''
+  });
+
   const navigate = useNavigate();
 
-  const handleNomeCompletoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNomeCompleto(event.target.value);
-  };
-
-  const handleTelefoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let valor = event.target.value.replace(/\D/g, '');
-    valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
-    valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
-    setTelefone(valor);
-  };
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handleCpfChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let valor = event.target.value.replace(/\D/g, '');
-    if (valor.length > 9) {
-      valor = valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
-    } else if (valor.length > 6) {
-      valor = valor.replace(/^(\d{3})(\d{3})(\d{3})$/, '$1.$2.$3');
-    } else if (valor.length > 3) {
-      valor = valor.replace(/^(\d{3})(\d{3})$/, '$1.$2');
+  useEffect(() => {
+    if (currentStep === 0) {
+      setEtapa(1);
+    } else if (currentStep === 1) {
+      setEtapa(2);
+    } else if (currentStep === 2) {
+      navigate('/simulador');
     }
-    setCpf(valor);
-  };
+  }, [currentStep, navigate]);
 
-  const handleRgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRg(event.target.value);
-  };
-
-  const handleDataNascimentoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDataNascimento(event.target.value);
-  };
-
-  const handleNacionalidadeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setNacionalidade(event.target.value);
-  };
-
-  const handleEstadoCivilChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setEstadoCivil(event.target.value);
-  };
-
-  const handleRendaMensalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let valor = event.target.value.replace(/\D/g, '');
-    valor = (parseInt(valor, 10) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    setRendaMensal(valor);
-  };
-
-  const handleSituacaoProfissionalChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSituacaoProfissional(event.target.value);
-  };
-
-  const handleNext = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    setIsSubmitted(true);
-    if (!form.checkValidity()) {
-      event.stopPropagation();
-      form.classList.add('was-validated');
-      return;
-    }
-    setStep(step + 1);
-    setIsSubmitted(false);
-  };
-
-  const handlePrev = () => {
-    setStep(step - 1);
-  };
-
-  const handleFinalSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    setIsSubmitted(true);
-    if (!form.checkValidity()) {
-      event.stopPropagation();
-      form.classList.add('was-validated');
-      return;
-    }
-
-    const data = {
-      nomeCompleto,
-      email,
-      cpf,
-      rg,
-      dataNascimento,
-      telefone,
-      nacionalidade,
-      estadoCivil,
-      rendaMensal,
-      situacaoProfissional,
-    };
-
-    const apiUrl = 'https://hook.us1.make.com/042oqm2cszci4bkq47dtxk6d596uqnmu';
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (etapa === 1) {
+      setDadosPessoais({
+        ...dadosPessoais,
+        [name]: value
       });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
+    } else {
+      if (name === "renda") {
+        setDadosAdicionais({
+          ...dadosAdicionais,
+          [name]: formatarRenda(value)
+        });
+      } else {
+        setDadosAdicionais({
+          ...dadosAdicionais,
+          [name]: value
+        });
       }
+    }
+  };
 
-      navigate('/simulador'); // Redireciona para a tela do simulador após o envio
-    } catch (error) {
-      console.error('Erro ao enviar os dados do formulário:', error.message);
-      alert('Erro ao enviar os dados do formulário. Por favor, tente novamente.');
+  const formatarRenda = (valor) => {
+    let num = valor.replace(/\D/g, '');
+    num = (num / 100).toFixed(2) + '';
+    num = num.replace('.', ',');
+    num = num.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    return 'R$ ' + num;
+  };
+
+  const handleNext = () => {
+    if (etapa === 1) {
+      setEtapa(2);
+      onNext();
+    } else {
+      onNext();
+    }
+  };
+
+  const handleBack = () => {
+    if (etapa === 2) {
+      setEtapa(1);
+      onBack();
+    } else {
+      onBack();
     }
   };
 
   return (
     <div className="container">
       <div className="main-content row">
-        <div className="info-section col-md-6">
-          <div className="icon-ctg">
-            <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="90" height="90" rx="5" fill="#267E3E" />
-              <path d="M56.25 66.9375H33.75C23.8275 66.9375 20.8125 63.9225 20.8125 54V36C20.8125 26.0775 23.8275 23.0625 33.75 23.0625H56.25C66.1725 23.0625 69.1875 26.0775 69.1875 36V54C69.1875 63.9225 66.1725 66.9375 56.25 66.9375ZM33.75 26.4375C25.695 26.4375 24.1875 27.9675 24.1875 36V54C24.1875 62.0325 25.695 63.5625 33.75 63.5625H56.25C64.305 63.5625 65.8125 62.0325 65.8125 54V36C65.8125 27.9675 64.305 26.4375 56.25 26.4375H33.75Z" fill="white" />
-              <path d="M60.75 37.6875H49.5C48.5775 37.6875 47.8125 36.9225 47.8125 36C47.8125 35.0775 48.5775 34.3125 49.5 34.3125H60.75C61.6725 34.3125 62.4375 35.0775 62.4375 36C62.4375 36.9225 61.6725 37.6875 60.75 37.6875Z" fill="white" />
-              <path d="M60.75 46.6875H51.75C50.8275 46.6875 50.0625 45.9225 50.0625 45C50.0625 44.0775 50.8275 43.3125 51.75 43.3125H60.75C61.6725 43.3125 62.4375 44.0775 62.4375 45C62.4375 45.9225 61.6725 46.6875 60.75 46.6875Z" fill="white" />
-              <path d="M60.75 55.6875H56.25C55.3275 55.6875 54.5625 54.9225 54.5625 54C54.5625 53.0775 55.3275 52.3125 56.25 52.3125H60.75C61.6725 52.3125 62.4375 53.0775 62.4375 54C62.4375 54.9225 61.6725 55.6875 60.75 55.6875Z" fill="white" />
-              <path d="M37.126 45.0898C33.9535 45.0898 31.366 42.5023 31.366 39.3298C31.366 36.1573 33.9535 33.5698 37.126 33.5698C40.2985 33.5698 42.8859 36.1573 42.8859 39.3298C42.8859 42.5023 40.2985 45.0898 37.126 45.0898ZM37.126 36.9448C35.821 36.9448 34.741 38.0248 34.741 39.3298C34.741 40.6348 35.821 41.7148 37.126 41.7148C38.431 41.7148 39.511 40.6348 39.511 39.3298C39.511 38.0248 38.431 36.9448 37.126 36.9448Z" fill="white" />
-              <path d="M44.9998 56.43C44.1448 56.43 43.4023 55.7775 43.3123 54.9C43.0648 52.47 41.1073 50.5125 38.6548 50.2875C37.6198 50.1975 36.5848 50.1975 35.5498 50.2875C33.0973 50.5125 31.1398 52.4475 30.8923 54.9C30.8023 55.8225 29.9698 56.52 29.0473 56.4075C28.1248 56.3175 27.4498 55.485 27.5398 54.5625C27.9448 50.5125 31.1623 47.295 35.2348 46.935C36.4723 46.8225 37.7323 46.8225 38.9698 46.935C43.0198 47.3175 46.2598 50.535 46.6648 54.5625C46.7548 55.485 46.0798 56.3175 45.1573 56.4075C45.1123 56.43 45.0448 56.43 44.9998 56.43Z" fill="white" />
-            </svg>
-          </div>
-          <p className="contg-passos">Passo {step}/3</p>
-          <h2>Continue sua simulação e saiba se possui <strong>um valor pré-aprovado</strong></h2>
-          <p>Preencha as informações a seguir, para criarmos a <strong>melhor oferta de crédito</strong></p>
-          <p>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
+        <div className="info-section align-middle col-md-6">
+          {etapa === 1 && (
+            <>
+              <img src="/sources/img/icon-info-pessoal.png" alt="Icone Informações Pessoais" className="img-fluid img-icon" />
+              <h2 className='title-desc'>Faça sua simulação de <b>forma gratuita</b></h2>
+              <p className='paragrah-desc'>Preencha as informações a seguir, para criarmos a <b>melhor oferta de crédito</b>.</p>
+              <p className='paragrah-desc'>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
+            </>
+          )}
+          {etapa === 2 && (
+            <>
+              <img src="/sources/img/icon-info-pessoal.png" alt="Icone Informações Pessoais" className="img-fluid img-icon" />
+              <h2 className='title-desc'>Faça sua simulação de <b>forma gratuita</b></h2>
+              <p className='paragrah-desc'>Preencha as informações a seguir, para criarmos a <b>melhor oferta de crédito</b>.</p>
+              <p className='paragrah-desc'>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
+            </>
+          )}
         </div>
         <div className="form-section col-md-6">
           <div className="form-container">
-            <form className={`needs-validation ${isSubmitted ? 'was-validated' : ''}`} noValidate onSubmit={step === 3 ? handleFinalSubmit : handleNext}>
-              {step === 1 && (
-                <>
-                  <h2 className="section-title">Informações Pessoais</h2>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="nome-completo">Nome Completo:</label>
+            {etapa === 1 && (
+              <>
+                <h3>Informações Pessoais</h3>
+                <div className="mb-3">
+                  <label className="form-label">Nome Completo</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-person"></i>
+                    </span>
                     <input
-                      className="form-control"
                       type="text"
-                      id="nome-completo"
-                      name="nomeCompleto"
-                      value={nomeCompleto}
-                      placeholder="Qual seu nome completo?"
-                      onChange={handleNomeCompletoChange}
+                      className="form-control"
+                      name="nome"
+                      value={dadosPessoais.nome}
+                      onChange={handleChange}
+                      placeholder="Digite seu nome completo"
                       required
                     />
-                    <div className="invalid-feedback">Insira seu nome completo para continuar.</div>
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="cpf">CPF:</label>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">E-mail</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-envelope"></i>
+                    </span>
                     <input
-                      className="form-control"
-                      type="text"
-                      id="cpf"
-                      name="cpf"
-                      value={cpf}
-                      placeholder="CPF"
-                      onChange={handleCpfChange}
-                      required
-                    />
-                    <div className="invalid-feedback">Informe o CPF antes de continuar.</div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="rg">Número do seu RG ou RNE (opcional):</label>
-                    <input
-                      className="form-control"
-                      type="number"
-                      id="rg"
-                      name="rg"
-                      value={rg}
-                      placeholder="Número do seu RG ou RNE - opcional"
-                      onChange={handleRgChange}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="data-nascimento">Data de nascimento:</label>
-                    <input
-                      className="form-control"
-                      type="date"
-                      id="data-nascimento"
-                      name="dataNascimento"
-                      value={dataNascimento}
-                      onChange={handleDataNascimentoChange}
-                      required
-                    />
-                    <div className="invalid-feedback">Verifique a data de nascimento.</div>
-                  </div>
-                </>
-              )}
-
-              {step === 2 && (
-                <>
-                  <h2 className="section-title">Informações de Contato</h2>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="telefone">Whatsapp:</label>
-                    <input
-                      className="form-control"
-                      type="tel"
-                      id="telefone"
-                      name="telefone"
-                      value={telefone}
-                      placeholder="Adicione o Número do seu Whatsapp"
-                      onChange={handleTelefoneChange}
-                      required
-                    />
-                    <div className="invalid-feedback">Por favor, insira um telefone válido.</div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="email">Email:</label>
-                    <input
-                      className="form-control"
                       type="email"
-                      id="email"
+                      className="form-control"
                       name="email"
-                      value={email}
-                      placeholder="Qual o seu email?"
-                      onChange={handleEmailChange}
+                      value={dadosPessoais.email}
+                      onChange={handleChange}
+                      placeholder="Digite seu e-mail"
                       required
                     />
-                    <div className="invalid-feedback">Informe o email antes de continuar.</div>
                   </div>
-                </>
-              )}
-
-              {step === 3 && (
-                <>
-                  <h2 className="section-title">Outras Informações</h2>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="nacionalidade">País da sua nacionalidade:</label>
-                    <select
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Telefone</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-telephone"></i>
+                    </span>
+                    <MaskedInput
+                      mask="+55 (99) 99999-9999"
                       className="form-control"
-                      id="nacionalidade"
-                      name="nacionalidade"
-                      value={nacionalidade}
-                      onChange={handleNacionalidadeChange}
+                      name="telefone"
+                      value={dadosPessoais.telefone}
+                      onChange={handleChange}
+                      placeholder="+55 (11) 91234-5678"
                       required
-                    >
-                      <option value="Brasil">Brasil</option>
-                      {/* Adicione outras opções conforme necessário */}
-                    </select>
+                    />
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="estado-civil">Estado civil:</label>
-                    <select
-                      className="form-control"
-                      id="estado-civil"
-                      name="estadoCivil"
-                      value={estadoCivil}
-                      onChange={handleEstadoCivilChange}
-                      required
-                    >
-                      <option value="" disabled>Selecione uma opção</option>
-                      <option value="Solteiro(a)">Solteiro(a)</option>
-                      <option value="Casado(a)">Casado(a)</option>
-                      <option value="Divorciado(a)">Divorciado(a)</option>
-                      <option value="Viúvo(a)">Viúvo(a)</option>
-                      <option value="Separado(a)">Separado(a)</option>
-                      {/* Adicione outras opções conforme necessário */}
-                    </select>
-                    <div className="invalid-feedback">Selecione uma opção para continuar.</div>
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="renda-mensal">Renda mensal da sua família:</label>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Data de Nascimento</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-calendar"></i>
+                    </span>
                     <input
+                      type="date"
                       className="form-control"
-                      type="text"
-                      id="renda-mensal"
-                      name="rendaMensal"
-                      value={rendaMensal}
-                      placeholder="Preencha esse campo para continuar"
-                      onChange={handleRendaMensalChange}
+                      name="dataNascimento"
+                      value={dadosPessoais.dataNascimento}
+                      onChange={handleChange}
+                      placeholder="Digite sua data de nascimento"
                       required
                     />
-                    <div className="invalid-feedback">Preencha esse campo para continuar.</div>
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label" htmlFor="situacao-profissional">Situação profissional:</label>
+                </div>
+                <button className="btn btn-continuar" onClick={handleNext}>
+                  Próximo
+                </button>
+              </>
+            )}
+            {etapa === 2 && (
+              <>
+                <h3>Informações Adicionais</h3>
+                <div className="mb-3">
+                  <label className="form-label">CPF</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-credit-card"></i>
+                    </span>
+                    <MaskedInput
+                      mask="999.999.999-99"
+                      className="form-control"
+                      name="cpf"
+                      value={dadosAdicionais.cpf}
+                      onChange={handleChange}
+                      placeholder="000.000.000-00"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Estado Civil</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-heart"></i>
+                    </span>
                     <select
                       className="form-control"
-                      id="situacao-profissional"
-                      name="situacaoProfissional"
-                      value={situacaoProfissional}
-                      onChange={handleSituacaoProfissionalChange}
+                      name="estadoCivil"
+                      value={dadosAdicionais.estadoCivil}
+                      onChange={handleChange}
                       required
                     >
-                      <option value="" disabled>Selecione uma opção</option>
-                      <option value="Empregado">Empregado</option>
-                      <option value="Desempregado">Desempregado</option>
-                      <option value="Aposentado">Aposentado</option>
-                      <option value="Estudante">Estudante</option>
-                      {/* Adicione outras opções conforme necessário */}
+                      <option value="">Selecione</option>
+                      <option value="solteiro">Solteiro(a)</option>
+                      <option value="casado">Casado(a)</option>
+                      <option value="divorciado">Divorciado(a)</option>
+                      <option value="viuvo">Viúvo(a)</option>
                     </select>
-                    <div className="invalid-feedback">Preencha esse campo para continuar.</div>
                   </div>
-                </>
-              )}
-
-              <div className="d-grid">
-                {step > 1 && (
-                  <button type="button" className="btn btn-link btn-voltar" onClick={handlePrev}>Voltar</button>
-                )}
-                <button className="btn btn-primary btn-continuar" type="submit">{step === 3 ? 'Cadastrar' : 'Continuar'}</button>
-              </div>
-            </form>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Renda mensal familiar</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-currency-dollar"></i>
+                    </span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="renda"
+                      value={dadosAdicionais.renda}
+                      onChange={handleChange}
+                      placeholder="R$ 0,00"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Situação profissional</label>
+                  <div className="input-group flex-nowrap">
+                    <span className="input-group-text" id="addon-wrapping">
+                      <i className="bi bi-briefcase"></i>
+                    </span>
+                    <select
+                      className="form-control"
+                      name="situacaoProfissional"
+                      value={dadosAdicionais.situacaoProfissional}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Selecione</option>
+                      <option value="empregado">Empregado</option>
+                      <option value="desempregado">Desempregado</option>
+                      <option value="autonomo">Autônomo</option>
+                      <option value="empresario">Empresário/Empreendedor</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <button className="btn btn-link" onClick={handleBack}>
+                    Voltar
+                  </button>
+                </div>
+                <button className="btn btn-continuar" onClick={handleNext}>
+                  Próximo
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Cadastro;

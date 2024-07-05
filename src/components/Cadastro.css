@@ -1,23 +1,18 @@
-/* Estilos para o Header */
-.header {
+/* Estilos para o Cadastro */
+
+.main-content {
   display: flex;
   width: 100%;
-  padding: 20px;
   justify-content: space-between;
-  align-items: center;
-  border-bottom: 1.5px solid #A6A6A6;
+  flex-wrap: wrap;
 }
 
-.logo-arbore {
-  height: 40px;
-}
-
-/* Estilos adicionais para o formulário */
 .form-container {
   width: 100%;
+  max-width: 600px;
 }
 
-.form-container .form-label {
+.form-label {
   color: #0C0B0F;
   font-size: 16px;
   font-style: normal;
@@ -25,40 +20,28 @@
   line-height: normal;
 }
 
-.form-container .form-control {
+.form-control {
+  margin: 0px;
   width: 100%;
   padding: 16px;
   border-radius: 5px;
-  border: 1px solid #267E3E;
-  background: #FAFAFA;
+  background: #Fafafa;
   font-family: Inter, sans-serif;
   font-size: 16px;
   color: #0C0B0F;
 }
 
-.form-container .form-control::placeholder {
+.form-control::placeholder {
   color: #A6A6A6;
 }
 
-.form-container .form-control:focus {
-  border-color: #267E3E;
-  box-shadow: 0 0 0 3px rgba(38, 126, 62, 0.2);
-}
 
-.form-container .invalid-feedback {
+.invalid-feedback {
   color: #d9534f;
   font-size: 12px;
 }
 
-.form-container .section-title {
-  font-family: Inter, sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #0C0B0F;
-  margin-bottom: 15px;
-}
-
-.form-container .btn-continuar {
+.btn-primary {
   padding: 16px;
   font-family: Inter, sans-serif;
   font-size: 16px;
@@ -71,95 +54,47 @@
   width: 100%;
 }
 
-.form-container .btn-continuar:hover {
+.btn-primary:hover {
   background-color: #1f6732;
 }
 
-.form-container .btn-continuar:disabled {
+.btn-primary:disabled {
   background-color: #A6A6A6;
   cursor: not-allowed;
 }
 
-/* Estilos para layout */
-.container {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  overflow-x: hidden; /* Impede o scroll horizontal */
+.input-group-text {
+  border: none  !important;
+  background-color: #fafafa;
 }
 
-.main-content {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+.title-desc{
+  margin-bottom: 20px;
 }
 
-.info-section {
-  flex: 1;
-  padding: 20px;
+.paragrah-desc{
+  margin-bottom: 20px;
 }
 
-.banco-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 100%;
+.icon-form{
+  color: #6D6D6D
 }
 
-.banco-label img {
-  max-width: 80px;
-  height: auto;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.banco-label:hover img,
-.banco-label img:active {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(38, 126, 62, 0.5);
-}
-
-.resultado-container {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.resultado-item {
-  background: #F5F5F5;
-  padding: 10px;
-  border-radius: 5px;
+.btn-link {
+  background: none;
+  border: none;
+  color: #267E3E !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  font-size: 16px;
   margin-bottom: 10px;
 }
 
-.resultado-item p {
-  margin: 0;
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: none;
 }
 
-.resultado-item .valor {
-  font-size: 24px;
-  color: #267E3E;
-  font-weight: bold;
-}
-
-/* Responsividade adicional */
-@media (max-width: 768px) {
-  .info-section, .form-section {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
-  .banco-label img {
-    max-width: 60px;
-  }
-
-  .form-container .form-control, .form-container .btn-continuar {
-    font-size: 14px;
-    padding: 12px;
-  }
-
-  .form-container .section-title {
-    font-size: 18px;
-  }
+.img-icon{
+  margin-bottom: 20px;
 }

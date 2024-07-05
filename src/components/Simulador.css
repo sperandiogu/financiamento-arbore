@@ -1,28 +1,32 @@
+/* Estilos gerais */
+body {
+  overflow-x: hidden; /* Impede o scroll horizontal */
+}
 
 .logo-arbore {
   height: 40px;
 }
 
-.logo-caixa-minha{
+.logo-caixa-minha {
   max-width: 90%;
   margin-bottom: 20px;
 }
 
-.casa-propria{
+.casa-propria {
   font-weight: bold;
   color: #267E3E;
   margin-bottom: 20px;
 }
 
-.simular-text{
+.simular-text {
   margin-bottom: 20px;
 }
 
-.simular-text span{
+.simular-text span {
   color: #267E3E;
 }
 
-.texto-auxiliar{
+.texto-auxiliar {
   font-size: 12px;
   color: #A6A6A6;
 }
@@ -32,7 +36,7 @@
   width: 100%;
 }
 
-.form-container .form-label {
+.form-label {
   color: #0C0B0F;
   font-size: 16px;
   font-style: normal;
@@ -40,40 +44,32 @@
   line-height: normal;
 }
 
-.form-container .form-control {
+.form-control {
   width: 100%;
   padding: 16px;
   border-radius: 5px;
-  border: 1px solid #267E3E;
+  border: none;
   background: #Fafafa;
   font-family: Inter, sans-serif;
   font-size: 16px;
   color: #0C0B0F;
 }
 
-.form-container .form-control::placeholder {
+.form-control::placeholder {
   color: #A6A6A6;
 }
 
-.form-container .form-control:focus {
-  border-color: #267E3E;
-  box-shadow: 0 0 0 3px rgba(38, 126, 62, 0.2);
+.form-control:focus {
+  border-color: none;
+  box-shadow: none;
 }
 
-.form-container .invalid-feedback {
+.invalid-feedback {
   color: #d9534f;
   font-size: 12px;
 }
 
-.form-container .section-title {
-  font-family: Inter, sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #0C0B0F;
-  margin-bottom: 15px;
-}
-
-.form-container .btn-continuar {
+.btn-continuar {
   padding: 16px;
   font-family: Inter, sans-serif;
   font-size: 16px;
@@ -86,33 +82,29 @@
   width: 100%;
 }
 
-.form-container .btn-continuar:hover {
+.btn-continuar:hover {
   background-color: #1f6732;
 }
 
-.form-container .btn-continuar:disabled {
+.btn-continuar:disabled {
   background-color: #A6A6A6;
   cursor: not-allowed;
 }
 
 /* Estilos para layout */
-.container {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
 
 .main-content {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
 }
 
-.info-section {
+
+.form-section {
   flex: 1;
   padding: 20px;
+  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
 }
 
 .banco-container {
@@ -153,4 +145,25 @@
   font-size: 24px;
   color: #267E3E;
   font-weight: bold;
+}
+
+/* Responsividade adicional */
+@media (max-width: 768px) {
+  .info-section, .form-section {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .banco-label img {
+    max-width: 60px;
+  }
+
+  .form-container .form-control, .btn-continuar {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .form-container .form-label {
+    font-size: 14px;
+  }
 }
