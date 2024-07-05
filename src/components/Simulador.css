@@ -1,169 +1,168 @@
 /* Estilos gerais */
 body {
-  overflow-x: hidden; /* Impede o scroll horizontal */
+  overflow-x: hidden !important; /* Impede o scroll horizontal */
 }
 
 .logo-arbore {
-  height: 40px;
+  height: 40px !important;
 }
 
 .logo-caixa-minha {
-  max-width: 90%;
-  margin-bottom: 20px;
+  max-width: 90% !important;
+  margin-bottom: 20px !important;
 }
 
 .casa-propria {
-  font-weight: bold;
-  color: #267E3E;
-  margin-bottom: 20px;
+  font-weight: bold !important;
+  color: #267E3E !important;
+  margin-bottom: 20px !important;
 }
 
 .simular-text {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .simular-text span {
-  color: #267E3E;
+  color: #267E3E !important;
 }
 
 .texto-auxiliar {
-  font-size: 12px;
-  color: #A6A6A6;
+  font-size: 12px !important;
+  color: #A6A6A6 !important;
 }
 
 /* Estilos adicionais para o formulário */
 .form-container {
-  width: 100%;
+  width: 100% !important;
 }
 
 .form-label {
-  color: #0C0B0F;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  color: #0C0B0F !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
 }
 
 .form-control {
-  width: 100%;
-  padding: 16px;
-  border-radius: 5px;
-  border: none;
-  background: #Fafafa;
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  color: #0C0B0F;
+  width: 100% !important;
+  padding: 16px !important;
+  border-radius: 5px !important;
+  border: none !important;
+  background: #Fafafa !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 16px !important;
+  color: #0C0B0F !important;
 }
 
 .form-control::placeholder {
-  color: #A6A6A6;
+  color: #A6A6A6 !important;
 }
 
 .form-control:focus {
-  border-color: none;
-  box-shadow: none;
+  border-color: none !important;
+  box-shadow: none !important;
 }
 
 .invalid-feedback {
-  color: #d9534f;
-  font-size: 12px;
+  color: #d9534f !important;
+  font-size: 12px !important;
 }
 
 .btn-continuar {
-  padding: 16px;
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 5px;
-  border: none;
-  background-color: #267E3E;
-  color: #FFF;
-  cursor: pointer;
-  width: 100%;
+  padding: 16px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 5px !important;
+  border: none !important;
+  background-color: #267E3E !important;
+  color: #FFF !important;
+  cursor: pointer !important;
+  width: 100% !important;
 }
 
 .btn-continuar:hover {
-  background-color: #1f6732;
+  background-color: #1f6732 !important;
 }
 
 .btn-continuar:disabled {
-  background-color: #A6A6A6;
-  cursor: not-allowed;
+  background-color: #A6A6A6 !important;
+  cursor: not-allowed !important;
 }
 
 /* Estilos para layout */
 
 .main-content {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+  display: flex !important;
+  width: 100% !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important; /* Permite que os elementos quebrem linha em telas menores */
 }
 
-
 .form-section {
-  flex: 1;
-  padding: 20px;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
+  flex: 1 !important;
+  padding: 20px !important;
+  box-sizing: border-box !important; /* Garante que o padding não aumente a largura total */
 }
 
 .banco-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
 }
 
 .banco-label img {
-  max-width: 80px;
-  height: auto;
-  transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 80px !important;
+  height: auto !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
 }
 
 .banco-label:hover img,
 .banco-label img:active {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(38, 126, 62, 0.5);
+  transform: scale(1.1) !important;
+  box-shadow: 0 0 10px rgba(38, 126, 62, 0.5) !important;
 }
 
 .resultado-container {
-  margin-top: 20px;
-  width: 100%; /* Garante que o resultado seja do tamanho do grid */
+  margin-top: 20px !important;
+  width: 100% !important; /* Garante que o resultado seja do tamanho do grid */
 }
 
 .resultado-item {
-  background: #F5F5F5;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  background: #F5F5F5 !important;
+  padding: 10px !important;
+  border-radius: 5px !important;
+  margin-bottom: 10px !important;
 }
 
 .resultado-item p {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .resultado-item .valor {
-  font-size: 24px;
-  color: #267E3E;
-  font-weight: bold;
+  font-size: 24px !important;
+  color: #267E3E !important;
+  font-weight: bold !important;
 }
 
 /* Responsividade adicional */
 @media (max-width: 768px) {
   .info-section, .form-section {
-    flex: 1 1 100%;
-    max-width: 100%;
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
   }
 
   .banco-label img {
-    max-width: 60px;
+    max-width: 60px !important;
   }
 
   .form-container .form-control, .btn-continuar {
-    font-size: 14px;
-    padding: 12px;
+    font-size: 14px !important;
+    padding: 12px !important;
   }
 
   .form-container .form-label {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 }
