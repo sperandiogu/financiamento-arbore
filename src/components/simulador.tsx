@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Simulador.css';
 
@@ -11,14 +11,6 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
   const [valorFgts, setValorFgts] = useState('');
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (currentStep === 2) {
-      navigate('/simulador');
-    } else if (currentStep === 3) {
-      navigate('/dashboard');
-    }
-  }, [currentStep, navigate]);
 
   const handlePrazoChange = (event) => {
     setPrazo(event.target.value);
@@ -70,7 +62,13 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
     `;
 
     setResultado(resultado);
-    onNext(); // Avança para a próxima etapa
+
+    const simulationResult = {
+      prestacaoMensal: prestacaoPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      valorTotalFinanciado: valorFinanciado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    };
+
+    navigate('/dashboard', { state: simulationResult });
   };
 
   return (
