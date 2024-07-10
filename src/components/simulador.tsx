@@ -47,7 +47,7 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
     const entradaNum = parseFloat(entrada.replace(/\D/g, '')) / 100;
     const valorFgtsNum = fgts === 'sim' ? parseFloat(valorFgts.replace(/\D/g, '')) / 100 : 0;
 
-    const taxaJurosAnual = 10.26 / 100; // Considerando apenas a Caixa
+    const taxaJurosAnual = 7.00 / 100; // Considerando apenas a Caixa
     const taxaJurosMensal = Math.pow(1 + taxaJurosAnual, 1 / 12) - 1;
     const valorFinanciado = valorImovelNum - entradaNum - valorFgtsNum;
 
