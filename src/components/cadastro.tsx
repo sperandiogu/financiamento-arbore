@@ -1,8 +1,9 @@
+import Alert from '@mui/material/Alert'; // Importar o componente de alerta do Material-UI
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useEffect, useState } from 'react';
+import InputMask from 'react-input-mask'; // Importar a biblioteca de máscara de entrada
 import { useNavigate } from 'react-router-dom';
-import './Cadastro.css';
-import MaskedInput from './MaskedInput.tsx'; // Importar o novo componente MaskedInput
+import '../styles/Cadastro.css';
 
 const Cadastro = ({ onNext, onBack, currentStep }) => {
   const [etapa, setEtapa] = useState(1);
@@ -140,7 +141,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
-                  <div className="invalid-feedback">{errors.nome}</div>
+                  {errors.nome && <Alert severity="error">{errors.nome}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">E-mail</label>
@@ -158,7 +159,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
-                  <div className="invalid-feedback">{errors.email}</div>
+                  {errors.email && <Alert severity="error">{errors.email}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Telefone</label>
@@ -166,7 +167,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     <span className="input-group-text" id="addon-wrapping">
                       <i className="bi bi-telephone"></i>
                     </span>
-                    <MaskedInput
+                    <InputMask
                       mask="+55 (99) 99999-9999"
                       className={`form-control ${errors.telefone ? 'is-invalid' : ''}`}
                       name="telefone"
@@ -176,7 +177,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
-                  <div className="invalid-feedback">{errors.telefone}</div>
+                  {errors.telefone && <Alert severity="error">{errors.telefone}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Data de Nascimento</label>
@@ -194,7 +195,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
-                  <div className="invalid-feedback">{errors.dataNascimento}</div>
+                  {errors.dataNascimento && <Alert severity="error">{errors.dataNascimento}</Alert>}
                 </div>
                 <button className="btn btn-continuar" onClick={handleNext}>
                   Próximo
@@ -210,7 +211,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     <span className="input-group-text" id="addon-wrapping">
                       <i className="bi bi-credit-card"></i>
                     </span>
-                    <MaskedInput
+                    <InputMask
                       mask="999.999.999-99"
                       className={`form-control ${errors.cpf ? 'is-invalid' : ''}`}
                       name="cpf"
@@ -220,7 +221,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
-                  <div className="invalid-feedback">{errors.cpf}</div>
+                  {errors.cpf && <Alert severity="error">{errors.cpf}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Estado Civil</label>
@@ -241,8 +242,8 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <option value="divorciado">Divorciado(a)</option>
                       <option value="viuvo">Viúvo(a)</option>
                     </select>
-                    <div className="invalid-feedback">{errors.estadoCivil}</div>
                   </div>
+                  {errors.estadoCivil && <Alert severity="error">{errors.estadoCivil}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Renda mensal familiar</label>
@@ -259,8 +260,8 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       placeholder="R$ 0,00"
                       required
                     />
-                    <div className="invalid-feedback">{errors.renda}</div>
                   </div>
+                  {errors.renda && <Alert severity="error">{errors.renda}</Alert>}
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Situação profissional</label>
@@ -281,8 +282,8 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <option value="autonomo">Autônomo</option>
                       <option value="empresario">Empresário/Empreendedor</option>
                     </select>
-                    <div className="invalid-feedback">{errors.situacaoProfissional}</div>
                   </div>
+                  {errors.situacaoProfissional && <Alert severity="error">{errors.situacaoProfissional}</Alert>}
                 </div>
                 <div className="text-center">
                   <button className="btn btn-link" onClick={handleBack}>

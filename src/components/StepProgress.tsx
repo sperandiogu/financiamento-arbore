@@ -1,7 +1,7 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import './StepProgress.css';
+import '../styles/StepProgress.css';
 
 const StepProgress = ({ currentStep }) => {
   const steps = [

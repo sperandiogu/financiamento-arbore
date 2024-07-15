@@ -5,8 +5,10 @@ const MaskedInput = ({ mask, ...props }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    const im = new Inputmask(mask);
-    im.mask(inputRef.current);
+    if (inputRef.current) {
+      const im = new Inputmask(mask);
+      im.mask(inputRef.current);
+    }
   }, [mask]);
 
   return <input ref={inputRef} {...props} />;

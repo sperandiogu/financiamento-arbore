@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Cadastro from './components/cadastro.tsx';
-import Dashboard from './components/Dashboard.tsx';
-import Header from './components/Header.tsx';
-import Simulador from './components/simulador.tsx';
-import StepProgress from './components/StepProgress.tsx';
+import Cadastro from '../components/cadastro.tsx';
+import Dashboard from '../components/Dashboard.tsx';
+import Header from '../components/Header.tsx';
+import Simulador from '../components/simulador.tsx';
+import StepProgress from '../components/StepProgress.tsx';
 
 const App = () => {
   const [currentStep, setCurrentStep] = useState(0);

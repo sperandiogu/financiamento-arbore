@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Simulador.css';
+import '../styles/Simulador.css';
 
 const Simulador = ({ onNext, onBack, currentStep }) => {
   const [resultado, setResultado] = useState('');
