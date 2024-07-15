@@ -19,6 +19,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
     situacaoProfissional: ''
   });
 
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,12 +62,31 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
     return 'R$ ' + num;
   };
 
-  const handleNext = () => {
+  const validate = () => {
+    let errors = {};
     if (etapa === 1) {
-      setEtapa(2);
-      onNext();
-    } else {
-      onNext();
+      if (!dadosPessoais.nome) errors.nome = "Nome completo é obrigatório";
+      if (!dadosPessoais.email) errors.email = "E-mail é obrigatório";
+      if (!dadosPessoais.telefone) errors.telefone = "Telefone é obrigatório";
+      if (!dadosPessoais.dataNascimento) errors.dataNascimento = "Data de nascimento é obrigatória";
+    } else if (etapa === 2) {
+      if (!dadosAdicionais.cpf) errors.cpf = "CPF é obrigatório";
+      if (!dadosAdicionais.estadoCivil) errors.estadoCivil = "Estado civil é obrigatório";
+      if (!dadosAdicionais.renda) errors.renda = "Renda mensal é obrigatória";
+      if (!dadosAdicionais.situacaoProfissional) errors.situacaoProfissional = "Situação profissional é obrigatória";
+    }
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validate()) {
+      if (etapa === 1) {
+        setEtapa(2);
+        onNext();
+      } else {
+        onNext();
+      }
     }
   };
 
@@ -82,7 +102,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
   return (
     <div className="container">
       <div className="main-content row">
-        <div className="info-section align-middle col-md-6">
+        <div className="info-section col-md-6 align-self-center">
           {etapa === 1 && (
             <>
               <img src="/sources/img/icon-info-pessoal.png" alt="Icone Informações Pessoais" className="img-fluid img-icon" />
@@ -93,10 +113,9 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
           )}
           {etapa === 2 && (
             <>
-              <img src="/sources/img/icon-info-pessoal.png" alt="Icone Informações Pessoais" className="img-fluid img-icon" />
-              <h2 className='title-desc'>Faça sua simulação de <b>forma gratuita</b></h2>
-              <p className='paragrah-desc'>Preencha as informações a seguir, para criarmos a <b>melhor oferta de crédito</b>.</p>
-              <p className='paragrah-desc'>Não se preocupe, você ainda não estará contratando o empréstimo.</p>
+              <img src="/sources/img/icon-info-adicional.png" alt="Icone Informações Adicionais" className="img-fluid img-icon" />
+              <h2>Preencha suas Informações Adicionais</h2>
+              <p>Precisamos de mais alguns dados para continuar com a simulação do financiamento.</p>
             </>
           )}
         </div>
@@ -113,7 +132,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.nome ? 'is-invalid' : ''}`}
                       name="nome"
                       value={dadosPessoais.nome}
                       onChange={handleChange}
@@ -121,6 +140,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
+                  <div className="invalid-feedback">{errors.nome}</div>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">E-mail</label>
@@ -130,7 +150,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <input
                       type="email"
-                      className="form-control"
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
                       name="email"
                       value={dadosPessoais.email}
                       onChange={handleChange}
@@ -138,6 +158,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
+                  <div className="invalid-feedback">{errors.email}</div>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Telefone</label>
@@ -147,7 +168,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <MaskedInput
                       mask="+55 (99) 99999-9999"
-                      className="form-control"
+                      className={`form-control ${errors.telefone ? 'is-invalid' : ''}`}
                       name="telefone"
                       value={dadosPessoais.telefone}
                       onChange={handleChange}
@@ -155,6 +176,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
+                  <div className="invalid-feedback">{errors.telefone}</div>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Data de Nascimento</label>
@@ -164,7 +186,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <input
                       type="date"
-                      className="form-control"
+                      className={`form-control ${errors.dataNascimento ? 'is-invalid' : ''}`}
                       name="dataNascimento"
                       value={dadosPessoais.dataNascimento}
                       onChange={handleChange}
@@ -172,6 +194,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
+                  <div className="invalid-feedback">{errors.dataNascimento}</div>
                 </div>
                 <button className="btn btn-continuar" onClick={handleNext}>
                   Próximo
@@ -189,7 +212,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <MaskedInput
                       mask="999.999.999-99"
-                      className="form-control"
+                      className={`form-control ${errors.cpf ? 'is-invalid' : ''}`}
                       name="cpf"
                       value={dadosAdicionais.cpf}
                       onChange={handleChange}
@@ -197,6 +220,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       required
                     />
                   </div>
+                  <div className="invalid-feedback">{errors.cpf}</div>
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Estado Civil</label>
@@ -205,7 +229,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <i className="bi bi-heart"></i>
                     </span>
                     <select
-                      className="form-control"
+                      className={`form-control ${errors.estadoCivil ? 'is-invalid' : ''}`}
                       name="estadoCivil"
                       value={dadosAdicionais.estadoCivil}
                       onChange={handleChange}
@@ -217,6 +241,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <option value="divorciado">Divorciado(a)</option>
                       <option value="viuvo">Viúvo(a)</option>
                     </select>
+                    <div className="invalid-feedback">{errors.estadoCivil}</div>
                   </div>
                 </div>
                 <div className="mb-3">
@@ -227,13 +252,14 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                     </span>
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${errors.renda ? 'is-invalid' : ''}`}
                       name="renda"
                       value={dadosAdicionais.renda}
                       onChange={handleChange}
                       placeholder="R$ 0,00"
                       required
                     />
+                    <div className="invalid-feedback">{errors.renda}</div>
                   </div>
                 </div>
                 <div className="mb-3">
@@ -243,7 +269,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <i className="bi bi-briefcase"></i>
                     </span>
                     <select
-                      className="form-control"
+                      className={`form-control ${errors.situacaoProfissional ? 'is-invalid' : ''}`}
                       name="situacaoProfissional"
                       value={dadosAdicionais.situacaoProfissional}
                       onChange={handleChange}
@@ -255,6 +281,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <option value="autonomo">Autônomo</option>
                       <option value="empresario">Empresário/Empreendedor</option>
                     </select>
+                    <div className="invalid-feedback">{errors.situacaoProfissional}</div>
                   </div>
                 </div>
                 <div className="text-center">
