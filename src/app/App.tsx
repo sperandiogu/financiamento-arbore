@@ -8,13 +8,48 @@ import StepProgress from '../components/StepProgress.tsx';
 
 const App = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [dadosCadastro, setDadosCadastro] = useState({});
+  const [dataSimulacao, setDataSimulacao] = useState({});
 
-  const handleNext = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+  const handleNext = (data) => {
+    if (currentStep === 0) {
+      setDadosCadastro(data);
+      setCurrentStep(1);
+    } else if (currentStep === 1) {
+      setDataSimulacao(data);
+      enviarDadosParaWebhook({ ...dadosCadastro, ...data });
+      setCurrentStep(2);
+    }
   };
 
   const handleBack = () => {
-    setCurrentStep((prevStep) => (prevStep > 0 ? prevStep - 1 : 0));
+    if (currentStep === 1) {
+      setCurrentStep(0);
+    } else if (currentStep === 2) {
+      setCurrentStep(1);
+    }
+  };
+
+  const enviarDadosParaWebhook = (dadosCompletos) => {
+    fetch('https://hook.us1.make.com/042oqm2cszci4bkq47dtxk6d596uqnmu', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dadosCompletos)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na resposta do webhook');
+        }
+        return response.text(); // Não espera um JSON válido
+      })
+      .then(data => {
+        console.log('Sucesso:', data);
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+      });
   };
 
   return (
@@ -23,13 +58,36 @@ const App = () => {
         <Header />
         <StepProgress currentStep={currentStep} />
         <Routes>
-          <Route path="/" element={<Cadastro onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
-          <Route path="/simulador" element={<Simulador onNext={handleNext} onBack={handleBack} currentStep={currentStep} />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/"
+            element={
+              <Cadastro
+                onNext={(data) => handleNext(data)}
+                onBack={handleBack}
+                currentStep={currentStep}
+              />
+            }
+          />
+          <Route
+            path="/simulador"
+            element={
+              <Simulador
+                onNext={(data) => {
+                  setDataSimulacao(data);
+                  enviarDadosParaWebhook({ ...dadosCadastro, ...data });
+                  setCurrentStep(2);
+                }}
+                onBack={handleBack}
+                currentStep={currentStep}
+                dadosCadastro={dadosCadastro}
+              />
+            }
+          />
+          <Route path="/dashboard" element={<Dashboard dataSimulacao={dataSimulacao} />} />
         </Routes>
       </div>
     </Router>
   );
-}
+};
 
 export default App;

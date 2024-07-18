@@ -5,7 +5,7 @@ import '../styles/Dashboard.css';
 const Dashboard = () => {
   const location = useLocation();
   const { state } = location;
-  const { prestacaoPrice, prazoMeses } = state || {};
+  const { prestacaoPrice, prazoMeses, valorFinanciado, ultimaPrestacao, entrada } = state || {};
 
   return (
     <div className="container mt-5">

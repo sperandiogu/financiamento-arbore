@@ -1,7 +1,7 @@
-import Alert from '@mui/material/Alert'; // Importar o componente de alerta do Material-UI
+import Alert from '@mui/material/Alert';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useEffect, useState } from 'react';
-import InputMask from 'react-input-mask'; // Importar a biblioteca de máscara de entrada
+import InputMask from 'react-input-mask';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Cadastro.css';
 
@@ -28,10 +28,8 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
       setEtapa(1);
     } else if (currentStep === 1) {
       setEtapa(2);
-    } else if (currentStep === 2) {
-      navigate('/simulador');
     }
-  }, [currentStep, navigate]);
+  }, [currentStep]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,9 +82,9 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
     if (validate()) {
       if (etapa === 1) {
         setEtapa(2);
-        onNext();
       } else {
-        onNext();
+        onNext({ ...dadosPessoais, ...dadosAdicionais });
+        navigate('/simulador');
       }
     }
   };

@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Simulador.css';
 
-const Simulador = ({ onNext, onBack, currentStep }) => {
+const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
   const [prazo, setPrazo] = useState(3); // Prazo em anos
   const [valorImovel, setValorImovel] = useState('');
   const [entrada, setEntrada] = useState('');
-  const [fgts, setFgts] = useState(null); // Mudança aqui
+  const [fgts, setFgts] = useState(null);
   const [valorFgts, setValorFgts] = useState('');
   const [errors, setErrors] = useState({});
 
@@ -16,8 +16,6 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
   useEffect(() => {
     if (currentStep === 2) {
       navigate('/simulador');
-    } else if (currentStep === 3) {
-      navigate('/dashboard');
     }
   }, [currentStep, navigate]);
 
@@ -30,7 +28,7 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
     const valorFormatado = (valor / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     setValorImovel(valorFormatado);
     const entradaCalculada = ((valor * 0.2) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    setEntrada(entradaCalculada); // Calcula a entrada automaticamente
+    setEntrada(entradaCalculada);
   };
 
   const handleFgtsChange = (valor) => {
@@ -65,13 +63,12 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
     const entradaNum = parseFloat(entrada.replace(/\D/g, '')) / 100;
     const valorFgtsNum = fgts ? parseFloat(valorFgts.replace(/\D/g, '')) / 100 : 0;
 
-    const taxaJurosAnual = 7.00 / 100; // Considerando apenas a Caixa
+    const taxaJurosAnual = 7.00 / 100;
     const taxaJurosMensal = Math.pow(1 + taxaJurosAnual, 1 / 12) - 1;
     const valorFinanciado = valorImovelNum - entradaNum - valorFgtsNum;
 
-    const prazoMeses = prazo * 12; // Converte o prazo de anos para meses
+    const prazoMeses = prazo * 12;
 
-    // Cálculo SAC
     const amortizacaoMensal = valorFinanciado / prazoMeses;
     let ultimaPrestacao = 0;
 
@@ -83,14 +80,17 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
 
     const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
 
-    const data = {
+    const dataSimulacao = {
       prestacaoPrice: prestacaoPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
       prazoMeses: prazoMeses,
       valorFinanciado: valorFinanciado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-      ultimaPrestacao: ultimaPrestacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      ultimaPrestacao: ultimaPrestacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      valorFgts: valorFgts,
+      entrada: entradaNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     };
 
-    navigate('/dashboard', { state: data });
+    onNext(dataSimulacao);
+    navigate('/dashboard', { state: { ...dataSimulacao, valorFgts: undefined } });
   };
 
   return (
