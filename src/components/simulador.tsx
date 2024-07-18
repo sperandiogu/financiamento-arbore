@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Simulador.css';
 
 const Simulador = ({ onNext, onBack, currentStep }) => {
-  const [resultado, setResultado] = useState('');
   const [prazo, setPrazo] = useState(3); // Prazo em anos
   const [valorImovel, setValorImovel] = useState('');
   const [entrada, setEntrada] = useState('');
@@ -50,7 +49,7 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
   const validate = () => {
     let errors = {};
     if (!valorImovel) errors.valorImovel = "Valor do imóvel é obrigatório";
-    if (!entrada) errors.entrada = "Valor de entrada é obrigatório";
+    if (!entrada) errors.entrada = "O imóvel não pode ser 100% financiado, com entrada mínima de 20% do valor financiado";
     if (fgts && !valorFgts) errors.valorFgts = "Valor do FGTS é obrigatório";
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -101,7 +100,9 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
           <h2 className='casa-propria'>Realize o sonho da casa própria!</h2>
           <p className='simular-text'>Preencha os dados referente ao <span>imovel que você deseja simular!*</span></p>
           <img className="logo-caixa-minha img-fluid" src="/sources/img/logo-caixa.png" alt="Logo Caixa" />
-          <p className='texto-auxiliar'>*Simulação realizada com base nas condições vigentes da Caixa, sujeita a alteração.</p>
+          <p className='texto-auxiliar'>*Simulação realizada com base nas condições vigentes da Caixa Econômica Federal, sujeita a alteração.</p>
+          <p className='texto-auxiliar'>**Sujeito à aprovação de crédito conforme políticas da Árbore Engenharia e agentes financeiros.</p>
+          <p className='texto-auxiliar'>***Os resultados são apenas uma simulação e não uma proposta de financiamento.</p>
         </div>
         <div className="form-section col-md-6">
           <div className="form-container">
