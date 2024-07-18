@@ -1,18 +1,11 @@
-/* src/styles/Dashboard.css */
-
-.chart-container {
-  position: relative;
-  margin: auto;
-  width: 100%;
-}
-
-.slider-container {
+.card {
   margin-top: 20px;
 }
 
-.selected-month-value {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 1.2em;
+.card-body {
+  padding: 20px;
+}
+
+.valor {
   font-weight: bold;
 }
