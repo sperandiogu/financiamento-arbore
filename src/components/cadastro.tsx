@@ -230,7 +230,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
                       <i className="bi bi-heart"></i>
                     </span>
                     <select
-                      className={`form-control ${errors.estadoCivil ? 'is-invalid' : ''}`}
+                      className={`form-select form-control ${errors.estadoCivil ? 'is-invalid' : ''}`}
                       name="estadoCivil"
                       value={dadosAdicionais.estadoCivil}
                       onChange={handleChange}
