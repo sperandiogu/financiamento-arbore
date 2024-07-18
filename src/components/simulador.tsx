@@ -103,6 +103,7 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
           <p className='texto-auxiliar'>*Simulação realizada com base nas condições vigentes da Caixa Econômica Federal, sujeita a alteração.</p>
           <p className='texto-auxiliar'>**Sujeito à aprovação de crédito conforme políticas da Árbore Engenharia e agentes financeiros.</p>
           <p className='texto-auxiliar'>***Os resultados são apenas uma simulação e não uma proposta de financiamento.</p>
+          <p className='texto-auxiliar'>****Entrada 100% parcelada.</p>
         </div>
         <div className="form-section col-md-6">
           <div className="form-container">
