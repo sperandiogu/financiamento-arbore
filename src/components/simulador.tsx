@@ -71,15 +71,24 @@ const Simulador = ({ onNext, onBack, currentStep }) => {
     const valorFinanciado = valorImovelNum - entradaNum - valorFgtsNum;
 
     const prazoMeses = prazo * 12; // Converte o prazo de anos para meses
-    const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
 
-    const ultimaParcela = (valorFinanciado / prazoMeses) + (valorFinanciado * taxaJurosMensal);
+    // Cálculo SAC
+    const amortizacaoMensal = valorFinanciado / prazoMeses;
+    let ultimaPrestacao = 0;
+
+    for (let i = 0; i < prazoMeses; i++) {
+      const jurosMensal = (valorFinanciado - i * amortizacaoMensal) * taxaJurosMensal;
+      const prestacaoMensal = amortizacaoMensal + jurosMensal;
+      ultimaPrestacao = prestacaoMensal;
+    }
+
+    const prestacaoPrice = (valorFinanciado * taxaJurosMensal) / (1 - Math.pow((1 + taxaJurosMensal), -prazoMeses));
 
     const data = {
       prestacaoPrice: prestacaoPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
       prazoMeses: prazoMeses,
       valorFinanciado: valorFinanciado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-      ultimaParcela: ultimaParcela.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      ultimaPrestacao: ultimaPrestacao.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     };
 
     navigate('/dashboard', { state: data });
