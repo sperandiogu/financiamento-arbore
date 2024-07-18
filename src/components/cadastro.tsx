@@ -114,7 +114,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
           )}
           {etapa === 2 && (
             <>
-              <img src="/sources/img/icon-info-adicional.png" alt="Icone Informações Adicionais" className="img-fluid img-icon" />
+              <img src="/sources/img/icon-info-pessoal.png" alt="Icone Informações Adicionais" className="img-fluid img-icon" />
               <h2>Preencha suas Informações Adicionais</h2>
               <p>Precisamos de mais alguns dados para continuar com a simulação do financiamento.</p>
             </>
