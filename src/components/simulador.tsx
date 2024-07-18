@@ -103,7 +103,6 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
           <p className='texto-auxiliar'>*Simulação realizada com base nas condições vigentes da Caixa Econômica Federal, sujeita a alteração.</p>
           <p className='texto-auxiliar'>*Sujeito à aprovação de crédito conforme políticas da Árbore Engenharia e agentes financeiros.</p>
           <p className='texto-auxiliar'>*Os resultados são apenas uma simulação e não uma proposta de financiamento.</p>
-          <p className='texto-auxiliar'>*Entrada 100% parcelada.</p>
         </div>
         <div className="form-section col-md-6">
           <div className="form-container">
@@ -127,7 +126,7 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="entrada">Entrada (R$):</label>
+                <label className="form-label" htmlFor="entrada">Entrada (R$) *Entrada 100% parcelada.:</label>
                 <input
                   className={`form-control ${errors.entrada ? 'is-invalid' : ''}`}
                   type="text"
