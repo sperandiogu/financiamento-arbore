@@ -99,7 +99,7 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
         <div className="info-section col-md-6">
           <h2 className='casa-propria'>Realize o sonho da casa própria!</h2>
           <p className='simular-text'>Preencha os dados referente ao <span>imovel que você deseja simular!*</span></p>
-          <img className="logo-caixa-minha img-fluid" src="/public/sources/img/logo-caixa.png" alt="Logo Caixa" />
+          <img className="logo-caixa-minha img-fluid" src="/sources/img/logo-caixa.png" alt="Logo Caixa" />
           <p className='texto-auxiliar'>*Simulação realizada com base nas condições vigentes da Caixa Econômica Federal, sujeita a alteração.</p>
           <p className='texto-auxiliar'>*Sujeito à aprovação de crédito conforme políticas da Árbore Engenharia e agentes financeiros.</p>
           <p className='texto-auxiliar'>*Os resultados são apenas uma simulação e não uma proposta de financiamento.</p>
@@ -126,7 +126,7 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="entrada">Entrada (R$) *Entrada 100% parcelada:</label>
+                <label className="form-label" htmlFor="entrada">Entrada (R$): <span className='entrada-label'>*Entrada 100% parcelada</span></label>
                 <input
                   className={`form-control ${errors.entrada ? 'is-invalid' : ''}`}
                   type="text"

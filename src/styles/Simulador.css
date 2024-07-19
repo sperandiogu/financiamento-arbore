@@ -259,3 +259,8 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   border-radius: 50%;
 }
+
+.entrada-label{
+  color: #6D6D6D;
+  font-size: 12px;
+}
