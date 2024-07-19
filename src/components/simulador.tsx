@@ -90,7 +90,7 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
     };
 
     onNext(dataSimulacao);
-    navigate('/dashboard', { state: { ...dataSimulacao, valorFgts: undefined } });
+    navigate('/dashboard', { state: { prestacaoPrice: dataSimulacao.prestacaoPrice, prazoMeses: dataSimulacao.prazoMeses, valorFinanciado: dataSimulacao.valorFinanciado, ultimaPrestacao: dataSimulacao.ultimaPrestacao, entrada: dataSimulacao.entrada } });
   };
 
   return (
@@ -126,7 +126,7 @@ const Simulador = ({ onNext, onBack, currentStep, dadosCadastro }) => {
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="entrada">Entrada (R$) *Entrada 100% parcelada.:</label>
+                <label className="form-label" htmlFor="entrada">Entrada (R$) *Entrada 100% parcelada:</label>
                 <input
                   className={`form-control ${errors.entrada ? 'is-invalid' : ''}`}
                   type="text"
