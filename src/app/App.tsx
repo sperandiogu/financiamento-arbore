@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Cadastro from '../components/cadastro.tsx';
 import Dashboard from '../components/Dashboard.tsx';
@@ -10,6 +10,16 @@ const App = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [dadosCadastro, setDadosCadastro] = useState({});
   const [dataSimulacao, setDataSimulacao] = useState({});
+  const [utmSource, setUTMSource] = useState<string | null>(null);
+  const [utmCampaign, setUTMCampaign] = useState<string | null>(null);
+  const [utmMedium, setUTMMedium] = useState<string | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUTMSource(params.get('utm_source'));
+    setUTMCampaign(params.get('utm_campaign'));
+    setUTMMedium(params.get('utm_medium'));
+  }, []);
 
   const handleNext = (data) => {
     if (currentStep === 0) {
@@ -31,12 +41,19 @@ const App = () => {
   };
 
   const enviarDadosParaWebhook = (dadosCompletos) => {
+    const dadosCompletosComUtm = {
+      ...dadosCompletos,
+      utm_source: utmSource,
+      utm_campaign: utmCampaign,
+      utm_medium: utmMedium
+    };
+
     fetch('https://hook.us1.make.com/042oqm2cszci4bkq47dtxk6d596uqnmu', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(dadosCompletos)
+      body: JSON.stringify(dadosCompletosComUtm)
     })
       .then(response => {
         if (!response.ok) {
