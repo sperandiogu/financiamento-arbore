@@ -101,7 +101,7 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
   return (
     <div className="container">
       <div className="main-content row">
-        <div className="info-section col-md-6 align-self-center">
+        <div className="info-section col-md-6">
           {etapa === 1 && (
             <>
               <img src="/sources/img/icone.png" alt="Icone Informações Pessoais" className="img-fluid img-icon" />
