@@ -3,12 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import '../styles/StepProgress.css';
 
-const StepProgress = ({ currentStep }) => {
-  const steps = [
-    { label: 'Informações Pessoais', icon: 'bi bi-person' },
-    { label: 'Informações Adicionais', icon: 'bi bi-info-circle' },
-    { label: 'Simulação', icon: 'bi bi-calculator' }
-  ];
+const StepProgress = ({ currentStep, hasEtapa2 = true }) => {
+  const steps = hasEtapa2
+    ? [
+        { label: 'Informações Pessoais', icon: 'bi bi-person' },
+        { label: 'Informações Adicionais', icon: 'bi bi-info-circle' },
+        { label: 'Simulação', icon: 'bi bi-calculator' }
+      ]
+    : [
+        { label: 'Informações Pessoais', icon: 'bi bi-person' },
+        { label: 'Simulação', icon: 'bi bi-calculator' }
+      ];
 
   return (
     <div className="step-progress">

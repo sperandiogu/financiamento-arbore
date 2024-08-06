@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import Cadastro from '../components/cadastro.tsx';
+import CadastroSimplificado from '../components/CadastroSimplificado.tsx'; // Importar o novo componente
 import Dashboard from '../components/Dashboard.tsx';
 import Header from '../components/Header.tsx';
 import Simulador from '../components/simulador.tsx';
@@ -69,16 +70,29 @@ const App = () => {
       });
   };
 
-  return (
-    <Router>
-      <div>
+  const AppWithStepProgress = () => {
+    const location = useLocation();
+    const isSimplificado = location.pathname === '/simplificado';
+
+    return (
+      <>
         <Header />
-        <StepProgress currentStep={currentStep} />
+        <StepProgress currentStep={currentStep} hasEtapa2={!isSimplificado} />
         <Routes>
           <Route
             path="/"
             element={
               <Cadastro
+                onNext={(data) => handleNext(data)}
+                onBack={handleBack}
+                currentStep={currentStep}
+              />
+            }
+          />
+          <Route
+            path="/simplificado"
+            element={
+              <CadastroSimplificado
                 onNext={(data) => handleNext(data)}
                 onBack={handleBack}
                 currentStep={currentStep}
@@ -102,7 +116,13 @@ const App = () => {
           />
           <Route path="/dashboard" element={<Dashboard dataSimulacao={dataSimulacao} />} />
         </Routes>
-      </div>
+      </>
+    );
+  };
+
+  return (
+    <Router>
+      <AppWithStepProgress />
     </Router>
   );
 };
