@@ -1,11 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { state } = location;
-  const { prestacaoPrice, prazoMeses } = state || {}; // Removendo variáveis não usadas
+  const { prestacaoPrice, prazoMeses } = state || {};
+
+  const handleRefazerSimulacao = () => {
+    navigate('/simulador');
+  };
 
   return (
     <div className="container mt-5">
@@ -30,6 +35,12 @@ const Dashboard = () => {
               >
                 Fale Agora com um Consultor
               </a>
+              <button
+                className="btn-link btn-secondary mt-3"
+                onClick={handleRefazerSimulacao}
+              >
+                Refazer Simulação
+              </button>
             </>
           ) : (
             <p>Nenhum resultado disponível. Por favor, realize uma simulação primeiro.</p>
