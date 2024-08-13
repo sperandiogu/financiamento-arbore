@@ -61,11 +61,20 @@ const Cadastro = ({ onNext, onBack, currentStep }) => {
     return 'R$ ' + num;
   };
 
+  const validateEmail = (email) => {
+    const specialCharRegex = /[áéíóúãõ~ç!#$%^&*(),?":{}|<>]/g; // Expressão regular para detectar caracteres especiais
+    return !specialCharRegex.test(email); // Retorna true se não houver caracteres especiais
+  };
+
   const validate = () => {
     let errors = {};
     if (etapa === 1) {
       if (!dadosPessoais.nome) errors.nome = "Nome completo é obrigatório";
-      if (!dadosPessoais.email) errors.email = "E-mail é obrigatório";
+      if (!dadosPessoais.email) {
+        errors.email = "E-mail é obrigatório";
+      } else if (!validateEmail(dadosPessoais.email)) {
+        errors.email = "E-mail contém caracteres especiais inválidos";
+      }
       if (!dadosPessoais.telefone) errors.telefone = "Telefone é obrigatório";
       if (!dadosPessoais.dataNascimento) errors.dataNascimento = "Data de nascimento é obrigatória";
     } else if (etapa === 2) {
