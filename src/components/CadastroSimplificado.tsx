@@ -23,10 +23,19 @@ const CadastroSimplificado = ({ onNext }) => {
     });
   };
 
+  const validateEmail = (email) => {
+    const specialCharRegex = /[áéíóúãõ~ç!#$%^&*(),?":{}|<>]/g; // Expressão regular para detectar caracteres especiais
+    return !specialCharRegex.test(email); // Retorna true se não houver caracteres especiais
+  };
+
   const validate = () => {
     let errors = {};
     if (!dadosPessoais.nome) errors.nome = "Nome completo é obrigatório";
-    if (!dadosPessoais.email) errors.email = "E-mail é obrigatório";
+    if (!dadosPessoais.email) {
+      errors.email = "E-mail é obrigatório";
+    } else if (!validateEmail(dadosPessoais.email)) {
+      errors.email = "E-mail contém caracteres especiais inválidos";
+    }
     if (!dadosPessoais.telefone) errors.telefone = "Telefone é obrigatório";
     setErrors(errors);
     return Object.keys(errors).length === 0;
